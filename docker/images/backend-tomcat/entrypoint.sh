@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "starting tomcat"
-mkdir /usr/share/tomcat7/logs
+mkdir ${SHARE_FOLDER}/tomcat7/logs
 /etc/init.d/tomcat7 start
 /etc/init.d/tomcat7 stop
 rm -rf /var/lib/tomcat7/webapps/ROOT

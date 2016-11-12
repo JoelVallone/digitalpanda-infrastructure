@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER Joel Vallone <joel.vallone@gmail.com>
 
-
+ENV SHARE_FOLDER /usr/share
 ENV JAVA_HEAP_SIZE 512
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
