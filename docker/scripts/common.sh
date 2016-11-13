@@ -3,6 +3,8 @@
 # Author: Joël Vallone, joel.vallone@gmail.com
 
 #Global constants
+SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SERVER_CONFIG_FILE_PATH="../../server-config.csv"
 DOCKER_IMAGE_FOLDER="../images"
 DOCKER_REGISTRY_IP=""
 DOCKER_REGISTRY_PORT=""
@@ -50,7 +52,6 @@ function installDockerDialog(){
 	    ;;
      esac
 }
-
 
 
 #Environment check
