@@ -88,7 +88,7 @@ malformed container csvConfig line for one of the following parameters :\
 function stopAndRemoveContainer() {
 
     echo "-> Stop and remove container";
-    getContainerIds='docker ps -a | grep ${1} | awk '"'{print "'$7'"}'"
+    getContainerIds='$(docker ps -a | grep ${1} | awk '"'{print "'$7'"}')"
     cmd="containerIds="${getContainerIds}' && [ ! -z ${containerIds} ] && docker stop ${containerIds} && docker rm ${containerIds} && docker rmi ${containerIds}'
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }

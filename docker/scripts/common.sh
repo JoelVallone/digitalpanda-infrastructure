@@ -24,7 +24,7 @@ function sshRun(){
     sshIp=$2
     cmd=$3
     echo -e "\t SSH-RUN -p ${sshPort} ${sshIp} : " "\n\t-> ${cmd}"
-    #ssh -p ${sshPort} ${sshIp} "${cmd}" < /dev/null
+    ssh -p ${sshPort} root@${sshIp} "${cmd}" < /dev/null
 }
 
 #Install docker on the local machine
