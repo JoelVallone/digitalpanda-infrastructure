@@ -2,9 +2,11 @@
 # Infrastructure scripts global constants and shared functions
 # Author: Joël Vallone, joel.vallone@gmail.com
 
+#set -x
+
 #Global constants
 SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-SERVER_CONFIG_FILE_PATH="../../server-config.csv"
+SERVER_CONFIG_FILE_PATH="../../services.config.csv"
 DOCKER_IMAGE_FOLDER="../images"
 DOCKER_REGISTRY_IP=""
 DOCKER_REGISTRY_PORT=""
@@ -14,6 +16,14 @@ DOCKER_REGISTRY_PORT=""
 function errorMessage(){
     echo -e "$1" >&2
     exit 1
+}
+
+function sshRun(){
+    sshPort=$1
+    sshIp=$2
+    cmd=$3
+#    echo -e "\t SSH-RUN -p ${sshPort} ${sshIp} : " "\n\t-> ${cmd}"
+    #ssh -p ${sshPort} ${sshIp} "${cmd}" < /dev/null
 }
 
 #Install docker on the local machine
@@ -26,8 +36,7 @@ function installDockerUbuntu(){
     sudo echo "deb https://apt.dockerproject.org/repo ubuntu-${version} main" | sudo tee "/etc/apt/sources.list.d/docker.list" > /dev/null
     sudo apt-get update
     sudo apt-get purge -Y lxc-docker
-    sudo apt-get install -Y linux-image-extra-$(uname -r) docker-engine  
-    
+    sudo apt-get install -Y linux-image-extra-$(uname -r) docker-engine      
 }
 
 #Ask for docker installation
@@ -55,7 +64,7 @@ function installDockerDialog(){
 
 
 #Environment check
-if ! type docker &> /dev/null ; then
-    echo "This script require docker..."
-    installDockerDialog
-fi
+#if ! type docker &> /dev/null ; then
+#    echo "This script require docker..."
+#    installDockerDialog
+#fi

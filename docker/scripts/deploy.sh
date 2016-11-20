@@ -3,34 +3,42 @@
 # Author: Joël Vallone, joel.vallone@gmail.com
 
 source common.sh
+
 #Local constants
 SCRIPT_NAME=$0
+INSTANCE_NAME=0
+DOCKER_IMAGE=1
+SERVER_MODE=2
+BINDING_IP=3
+BINDING_PORT=4
+SSH_IP=5
+SSH_PORT=6
 
 #local functions
 function printUsage() {
     errorMessage  "USAGE: $SCRIPT_NAME {space separated container names OR \"all\"}"
 }
 
-INSTANCE_NAME=0
-DOCKER_IMAGE=1
-SERVER_MODE=2
-BINDING_IP=3
-BINDING_PORT=4
-
-function fetchCsvConfig(){
-    srvCnt=0
+function fetchCsvConfigFile(){
+    serviceCnt=0
+    first=1
     while read line ;do
-	srvConfig[${srvCnt}]=${line}
-	srvInstanceNameMap[${srvConfig[${INSTANCE_NAME}]}]=${srvCnt}
-	((srvCnt++))
+	if [ ${first} -eq 1 ]; then first=0; continue; fi
+	set -x
+	serviceConfigArr[${serviceCnt}]=${line}
+	serviceConfig=(${line//,/ });
+	instanceName=${serviceConfig[${INSTANCE_NAME}]};
+	serviceInstanceNameMap[${instanceName}]=${serviceCnt}
+	set +x
+	((serviceCnt++))
     done < ${SERVER_CONFIG_FILE_PATH}
 }
 
-function getCsvConfig(){
+function echoCsvConfigFromInstanceName(){
   if [ ! -z ${1+x} ]; then
-	srvId=${srvInstanceNameMap[${1}]}
+	srvId=${serviceInstanceNameMap[${1}]}
 	if [ ! -z ${srvId+x} ]; then
-	    echo ${srvConfig[${srvId}]}
+	    echo ${serviceConfigArr[${srvId}]}
 	else
 	    errorMessage "${SCRIPT_NAME}.getCsvConfig(): unknown container instance name \"${1}\", please check your server config file at ${SCRIPTS_FOLDER}/${SERVER_CONFIG_FILE_PATH}"
 	fi
@@ -39,44 +47,59 @@ function getCsvConfig(){
   fi
 }
 
+function setServiceConfig() {
+    srvConfig=(${1//,/ });
+    instanceName=${srvConfig[${INSTANCE_NAME}]};
+    dockerImage=${srvConfig[${DOCKER_IMAGE}]};
+    sshIp=${srvConfig[${SSH_IP}]};
+    sshPort=${srvConfig[${SSH_PORT}]};
+    serverMode=${srvConfig[${SERVER_MODE}]};
+    if [ -z ${instanceName} -o -z ${dockerImage} -o -z ${sshIp} -o -z ${sshPort} ]; then
+	errorMessage "${SCRIPT_NAME}.startContainer(): \
+malformed container csvConfig line for one of the following parameters :\
+ -> instance-name=\"${instanceName}\" \n\
+ -> docker-image=\"${dockerImage}\" \n\
+ -> server-mode=\"${serverMode}\" \n\
+ -> ssh-ip=\"${sshIp}\" \n\
+ -> ssh-port=\"${sshPort}\" \n\
+";     fi
+    if [ ${serverMode} != "0" ]; then
+	bindingIp=${srvConfig[${BINDING_IP}]};
+	bindingPort=${srvConfig[${BINDING_PORT}]};
+
+	if [ -z ${bindingPort} -o -z ${bindingIp} ]; then
+	    errorMessage "${SCRIPT_NAME}.startContainer(): \
+malformed container csvConfig line for one of the following parameters :\
+ -> instance-name=\"${instanceName}\" \n\
+ -> binding-ip=\"${bindingIp}\" \n\
+ -> binding-port=\"${bindingPort}\" \n\
+";	   fi
+	msgSrv="with service listening on ${bindingIp}:${bindingPort}"
+    else
+	bindingIp="";
+	bindingPort="";
+	msgSrv=""
+    fi
+    echo -e "\n\nDeploy INSTANCE=${instanceName}  IMAGE=${dockerImage} on ${sshIp} " ${msgSrv};
+}
+
 function stopAndRemoveContainer() {
-    docker rm ${1}
-    docker rmi ${1}
+
+    echo "-> Stop and remove container";
+    getContainerIds='docker ps -a | grep ${1} | awk '"'{print "'$7'"}'"
+    cmd="containerIds="${getContainerIds}' && [ ! -z ${containerIds} ] && docker stop ${containerIds} && docker rm ${containerIds} && docker rmi ${containerIds}'
+    sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
 function deployContainer() {
-   if [ ! -z ${1+x} ]; then
-       srvConfig=(${1//,/ })
-       instanceName=${srvConfig[${INSTANCE_NAME}]}
-       dockerImage=${srvConfig[${DOCKER_IMAGE}]}
-       if [ -z ${instanceName} -o -z ${dockerImage} ]; then
-	   errorMessage "${SCRIPT_NAME}.startContainer(): malformed container csvConfig line for one of the following parameters : \
-INSTANCE_NAME=\"${srvConfig[${INSTANCE_NAME}]}\" \
-DOCKER_IMAGE=\"\" "
-       fi
-       if [ ${srvConfig[${SEVER_MODE}]} -eq 0 ]; then
-	   sudo docker run \
-	       -t -i \
-	       --name  ${instanceName} \
-	       ${dockerImage}:latest /bin/bash
-       else
-	   sudo docker run \
-	       -p ${srvConfig[${BINDING_IP}]}:${srvConfig[${BINDING_PORT}]}:${srvConfig[${BINDING_PORT}]} \
-	       -t -i \
-	       --name ${srvConfig[${INSTANCE_NAME}]} \
-	       ${srvConfig[${DOCKER_IMAGE}]} /bin/bash
-       fi
-    else
-	errorMessage "${SCRIPT_NAME}.startContainer(): missing container csvConfig line"
+    echo "-> Starting container";
+#    set -x
+    cmd="docker run -d -t -i --name ${instanceName} "
+    if [ ${serverMode} == "1" ]; then
+	cmd=${cmd}"-p ${bindingIp}:${bindingPort}:${bindingPort} "
     fi
-}
-
-function getContainerId() {
-    if [ ! -z ${1+x} ];then
-	docker ps -a | grep ${1} | awk '{print $7}'
-    else
-	errorMessage "${SCRIPT_NAME}.getContainerId(): missing container instance name"
-    fi
+    cmd=${cmd}"${dockerImage} /bin/bash"
+    sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
 #fetch and check input
@@ -84,29 +107,23 @@ if [ $# -lt 1 ]; then
     printUsage
 fi
 
-#fetch containers deployment config
-fetchCsvConfig
+#fetch containers deployment config from file
+fetchCsvConfigFile
 
+#stop->remove-deploy each container name defined by user input
 for dockerInstanceName in $@; do
-    #remove containers before deploy if any
-    if [ ${dockerInstanceName,,} = "all" ]; then
-	containerIds=(docker ps -qa)
-    else
-	containerIds=$(getContainerId ${dockerInstanceName})
-    fi    
-    if [ ! -z ${containerId+x} ];then
-	stopAndRemoveContainer ${containerId}
-    fi
-
-    #deploy container
     if [ ${dockerInstanceName,,} = "all" ];then
-	for srvId:= 0 to ((srvCnt-1))
+	for ((serviceId = 0; serviceId <= ${serviceCnt} - 1; serviceId++))
 	do
-	    deployContainer ${srvConfig[${srvId}]}
+	    setServiceConfig ${serviceConfigArr[${serviceId}]}
+	    stopAndRemoveContainer
+	    deployContainer
 	done
 	exit 0;
     else
-       instanceCsvConfig=$(getContainerCsvConfig ${dockerInstanceName})
-       deployContainer ${instanceCsvConfig}
+       setServiceConfig $(echoCsvConfigFromInstanceName ${dockerInstanceName})
+       stopAndRemoveContainer
+       deployContainer
     fi
 done
+
