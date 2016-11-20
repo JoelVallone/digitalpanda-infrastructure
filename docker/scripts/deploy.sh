@@ -24,21 +24,23 @@ function fetchCsvConfigFile(){
     first=1
     while read line ;do
 	if [ ${first} -eq 1 ]; then first=0; continue; fi
-	set -x
 	serviceConfigArr[${serviceCnt}]=${line}
-	serviceConfig=(${line//,/ });
-	instanceName=${serviceConfig[${INSTANCE_NAME}]};
-	serviceInstanceNameMap[${instanceName}]=${serviceCnt}
-	set +x
-	((serviceCnt++))
+	serviceCnt=$((serviceCnt + 1))
     done < ${SERVER_CONFIG_FILE_PATH}
 }
 
 function echoCsvConfigFromInstanceName(){
   if [ ! -z ${1+x} ]; then
-	srvId=${serviceInstanceNameMap[${1}]}
-	if [ ! -z ${srvId+x} ]; then
-	    echo ${serviceConfigArr[${srvId}]}
+	srvId=-1;
+	instance='-';
+	while [ ${instance} != ${1} -a ${srvId} -lt ${serviceCnt} ]; do
+	    configLine=${serviceConfigArr[${srvId}]};
+	    srvConfig=(${configLine//,/ });
+	    instance=${srvConfig[${INSTANCE_NAME}]};
+	    srvId=$((srvId + 1));
+	done
+	if [ ${srvId} -lt ${serviceCnt} ]; then
+	    echo ${configLine};
 	else
 	    errorMessage "${SCRIPT_NAME}.getCsvConfig(): unknown container instance name \"${1}\", please check your server config file at ${SCRIPTS_FOLDER}/${SERVER_CONFIG_FILE_PATH}"
 	fi
@@ -91,7 +93,7 @@ function stopAndRemoveContainer() {
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
-function deployContainer() {
+function startContainer() {
     echo "-> Starting container";
 #    set -x
     cmd="docker run -d -t -i --name ${instanceName} "
@@ -102,11 +104,17 @@ function deployContainer() {
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
+function deployContainer(){
+    if [ -z ${1} ];then errorMessage "${SCRIPT_NAME}.deployContainer(): no config data" ;fi
+    setServiceConfig ${1}
+    stopAndRemoveContainer
+    startContainer
+}
+
 #fetch and check input
 if [ $# -lt 1 ]; then
     printUsage
 fi
-
 #fetch containers deployment config from file
 fetchCsvConfigFile
 
@@ -115,15 +123,13 @@ for dockerInstanceName in $@; do
     if [ ${dockerInstanceName,,} = "all" ];then
 	for ((serviceId = 0; serviceId <= ${serviceCnt} - 1; serviceId++))
 	do
-	    setServiceConfig ${serviceConfigArr[${serviceId}]}
-	    stopAndRemoveContainer
-	    deployContainer
+	    configLine=${serviceConfigArr[${serviceId}]};
+	    deployContainer ${configLine}
 	done
 	exit 0;
     else
-       setServiceConfig $(echoCsvConfigFromInstanceName ${dockerInstanceName})
-       stopAndRemoveContainer
-       deployContainer
+	configLine=$(echoCsvConfigFromInstanceName ${dockerInstanceName});
+	deployContainer ${configLine}
     fi
 done
 

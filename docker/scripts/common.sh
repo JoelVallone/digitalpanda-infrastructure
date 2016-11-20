@@ -2,6 +2,7 @@
 # Infrastructure scripts global constants and shared functions
 # Author: Joël Vallone, joel.vallone@gmail.com
 
+set -e
 #set -x
 
 #Global constants
@@ -22,7 +23,7 @@ function sshRun(){
     sshPort=$1
     sshIp=$2
     cmd=$3
-#    echo -e "\t SSH-RUN -p ${sshPort} ${sshIp} : " "\n\t-> ${cmd}"
+    echo -e "\t SSH-RUN -p ${sshPort} ${sshIp} : " "\n\t-> ${cmd}"
     #ssh -p ${sshPort} ${sshIp} "${cmd}" < /dev/null
 }
 
