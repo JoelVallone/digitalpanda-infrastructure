@@ -53,6 +53,7 @@ function setServiceConfig() {
     srvConfig=(${1//,/ });
     instanceName=${srvConfig[${INSTANCE_NAME}]};
     dockerImage=${srvConfig[${DOCKER_IMAGE}]};
+    dockerFullImageName="${DOCKER_REGISTRY_IP}:${DOCKER_REGISTRY_PORT}/${DOCKER_REGISTRY_USERNAME}/${dockerImage}"
     sshIp=${srvConfig[${SSH_IP}]};
     sshPort=${srvConfig[${SSH_PORT}]};
     serverMode=${srvConfig[${SERVER_MODE}]};
@@ -88,15 +89,15 @@ malformed container csvConfig line for one of the following parameters :\
 function stopAndRemoveContainer() {
 
     echo "-> Stop and remove container";
-    getContainerIds='$(docker ps -a | grep ${1} | awk '"'{print "'$7'"}')"
-    cmd="containerIds="${getContainerIds}' && [ ! -z ${containerIds} ] && docker stop ${containerIds} && docker rm ${containerIds} && docker rmi ${containerIds}'
+    getContainerIds='$(docker ps -a | grep "'${instanceName}'" | awk '"'{print "'$1'"}')"
+    cmd="containerIds="${getContainerIds}' && [ ! -z ${containerIds} ] ; docker stop ${containerIds} ; docker rm ${containerIds}'
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
 function startContainer() {
     echo "-> Starting container";
 #    set -x
-    cmd="docker run -d -t -i --name ${instanceName} "
+    cmd="docker run -d -t -i --name ${instanceName} ${dockerFullImageName} "
     if [ ${serverMode} == "1" ]; then
 	cmd=${cmd}"-p ${bindingIp}:${bindingPort}:${bindingPort} "
     fi

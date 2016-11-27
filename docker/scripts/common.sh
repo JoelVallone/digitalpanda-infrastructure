@@ -8,7 +8,8 @@ set -e
 #Global constants
 SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SERVER_CONFIG_FILE_PATH="../../services.config.csv"
-DOCKER_IMAGE_FOLDER="../images"
+DOCKER_IMAGE_FOLDER="${SCRIPTS_FOLDER}../images"
+DOCKER_REGISTRY_USERNAME=""
 DOCKER_REGISTRY_IP=""
 DOCKER_REGISTRY_PORT=""
 

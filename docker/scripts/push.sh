@@ -14,11 +14,18 @@ function printUsage() {
 }
 
 function pushToRegistry() {
-    local imageName=$1
+    local imageName=${1}
+    local fullImageName="${DOCKER_REGISTRY_IP}:${DOCKER_REGISTRY_PORT}/${DOCKER_REGISTRY_USERNAME}/${imageName}"
     local imageFullPath="${DOCKER_IMAGE_FOLDER}/${imageName}"
     echo "Build and push docker image \"${imageName}\" to docker registry ${DOCKER_REGISTRY_IP}:${DOCKER_REGISTRY_PORT}"
-    sudo docker build -t ${imageName}:latest ${imageFullPath}
-    sudo docker push ${DOCKER_REGISTRY_IP}:${DOCKER_REGISTRY_PORT}/${imageName}
+    
+    cmd="sudo docker build -t ${fullImageName} ${imageFullPath}"
+    echo ${cmd}
+    eval ${cmd}
+
+    cmd="sudo docker push ${fullImageName}"
+    echo ${cmd}
+    eval ${cmd}
 }
 
 #fetch and check input
