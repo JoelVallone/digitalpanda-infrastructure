@@ -7,8 +7,8 @@ set -e
 
 #Global constants
 SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-SERVER_CONFIG_FILE_PATH="../../services.config.csv"
-DOCKER_IMAGE_FOLDER="${SCRIPTS_FOLDER}../images"
+SERVER_CONFIG_FILE_PATH="${SCRIPTS_FOLDER}/../../services.config.csv"
+DOCKER_IMAGE_FOLDER="${SCRIPTS_FOLDER}/../images"
 DOCKER_REGISTRY_USERNAME=""
 DOCKER_REGISTRY_IP=""
 DOCKER_REGISTRY_PORT=""
@@ -24,8 +24,8 @@ function sshRun(){
     sshPort=$1
     sshIp=$2
     cmd=$3
-    echo -e "\t SSH-RUN -p ${sshPort} ${sshIp} : " "\n\t-> ${cmd}"
-    ssh -p ${sshPort} root@${sshIp} "${cmd}" < /dev/null
+    echo -e "\t SSH-RUN -p ${sshPort} ${sshIp} : " "\ncmd='${cmd}'"
+    ssh -p ${sshPort} root@${sshIp} "${cmd}" < /dev/null || true
 }
 
 #Install docker on the local machine

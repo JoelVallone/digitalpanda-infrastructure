@@ -2,10 +2,10 @@
 # Push a docker image to the local docker registry
 # Author: Joël Vallone, joel.vallone@gmail.com
 
-source common.sh
-
 #Local constants
 SCRIPT_NAME=$0
+SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "${SCRIPTS_FOLDER}/common.sh"
 
 
 #local functions

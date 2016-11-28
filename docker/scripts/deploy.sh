@@ -2,8 +2,6 @@
 # (Re)deploy all the docker containers
 # Author: Joël Vallone, joel.vallone@gmail.com
 
-source common.sh
-
 #Local constants
 SCRIPT_NAME=$0
 INSTANCE_NAME=0
@@ -13,6 +11,8 @@ BINDING_IP=3
 BINDING_PORT=4
 SSH_IP=5
 SSH_PORT=6
+SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "${SCRIPTS_FOLDER}/common.sh"
 
 #local functions
 function printUsage() {
@@ -89,8 +89,7 @@ malformed container csvConfig line for one of the following parameters :\
 function stopAndRemoveContainer() {
 
     echo "-> Stop and remove container";
-    getContainerIds='$(docker ps -a | grep "'${instanceName}'" | awk '"'{print "'$1'"}')"
-    cmd="containerIds="${getContainerIds}' && [ ! -z ${containerIds} ] ; docker stop ${containerIds} ; docker rm ${containerIds}'
+    cmd='containerIds=$(docker ps -q --filter name='${instanceName}') && [ ! -z ${containerIds} ] && ( docker stop ${containerIds} ; docker rm ${containerIds})'
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
