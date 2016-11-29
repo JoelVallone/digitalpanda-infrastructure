@@ -89,18 +89,18 @@ malformed container csvConfig line for one of the following parameters :\
 function stopAndRemoveContainer() {
 
     echo "-> Stop and remove container";
-    cmd='containerIds=$(docker ps -q --filter name='${instanceName}') && [ ! -z ${containerIds} ] && ( docker stop ${containerIds} ; docker rm ${containerIds})'
+    cmd='containerIds=$(docker ps -q -a --filter name='${instanceName}') && [ ! -z ${containerIds} ] && ( docker stop ${containerIds} ; docker rm ${containerIds})'
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 
 function startContainer() {
     echo "-> Starting container";
 #    set -x
-    cmd="docker run -d -t -i --name ${instanceName} ${dockerFullImageName} "
+    cmd="docker run -d -t -i --name ${instanceName} "
     if [ ${serverMode} == "1" ]; then
 	cmd=${cmd}"-p ${bindingIp}:${bindingPort}:${bindingPort} "
     fi
-    cmd=${cmd}"${dockerImage} /bin/bash"
+    cmd=${cmd}"${dockerFullImageName}"
     sshRun ${sshPort} ${sshIp} "${cmd}"
 }
 

@@ -5,7 +5,7 @@ ENV SHARE_FOLDER /usr/share
 
 RUN  \
    apt-get update && \
-   apt-get install git
+   apt-get install -y curl git
 
 RUN  \
   curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
@@ -13,12 +13,12 @@ RUN  \
   rm -rf /var/lib/apt/lists/*
 
 RUN cd /opt && \
-    git clone git@github.com:JoelVallone/digitalpanda-frontend.git && \
-    cd /digitalpanda-frontend && \
+    git clone https://github.com/JoelVallone/digitalpanda-frontend.git && \
+    cd ./digitalpanda-frontend  && \
     npm install
 
 COPY entrypoint.sh /opt/entrypoint.sh
 
-EXPOSE 8081
+EXPOSE 8000
 
 ENTRYPOINT /opt/entrypoint.sh
