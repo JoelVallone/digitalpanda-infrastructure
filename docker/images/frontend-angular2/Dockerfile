@@ -13,12 +13,10 @@ RUN  \
   rm -rf /var/lib/apt/lists/*
 
 RUN cd /opt && \
-    git clone https://github.com/JoelVallone/digitalpanda-frontend.git && \
+    git clone https://github.com/JoelVallone/digitalpanda-frontend.git &&  \
     cd ./digitalpanda-frontend  && \
     npm install
 
 COPY entrypoint.sh /opt/entrypoint.sh
-
-EXPOSE 8000
 
 ENTRYPOINT /opt/entrypoint.sh

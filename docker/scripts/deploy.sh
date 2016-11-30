@@ -95,8 +95,7 @@ function stopAndRemoveContainer() {
 
 function startContainer() {
     echo "-> Starting container";
-#    set -x
-    cmd="docker run -d -t -i --name ${instanceName} "
+    cmd="docker pull ${dockerFullImageName}; docker run -d --name ${instanceName} "
     if [ ${serverMode} == "1" ]; then
 	cmd=${cmd}"-p ${bindingIp}:${bindingPort}:${bindingPort} "
     fi
