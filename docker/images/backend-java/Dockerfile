@@ -7,11 +7,10 @@ ENV JAVA_HEAP_SIZE 512
 RUN apt-get update && \
     apt-get install -y software-properties-common
 
-RUN add-apt-repository ppa:webupd8team/java && \
+RUN add-apt-repository ppa:openjdk-r/ppa && \
  apt-get update && \
- apt-get install -y oracle-java8-installer && \
- apt-get install -y oracle-java8-set-default && \
- rm -rf /var/lib/apt/lists/* && \
+ apt-get install -y openjdk-8-jdk && \
+ rm -rf /var/lib/apt/lists/*
 
 COPY *backend*.jar /opt/backend.jar
 COPY entrypoint.sh /opt/entrypoint.sh
