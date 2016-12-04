@@ -10,7 +10,12 @@ source "${SCRIPTS_FOLDER}/common.sh"
 
 #local functions
 function printUsage() {
-    errorMessage  "USAGE: $SCRIPT_NAME {space separated container names OR \"all\"}"
+    local folders=$(cd ${DOCKER_IMAGE_FOLDER}; ls -d */)
+    folders="${folders//\/}"
+    errorMessage  "USAGE: $SCRIPT_NAME {space separated container names OR \"all\"} \n\
+POSSIBLE IMAGES : \n\
+all \n\
+${folders}"
 }
 
 function pushToRegistry() {

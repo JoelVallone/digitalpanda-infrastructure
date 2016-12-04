@@ -16,9 +16,23 @@ source "${SCRIPTS_FOLDER}/common.sh"
 
 #local functions
 function printUsage() {
-    errorMessage  "USAGE: $SCRIPT_NAME {space separated container names OR \"all\"}"
+    errorMessage  "USAGE: $SCRIPT_NAME {space separated container names OR \"all\"} \n\
+POSSIBLE CONTAINER NAMES: \n\
+$(echoContainerList)"
 }
 
+function echoContainerList(){
+    local srvId=0;
+    local text="";
+    while [ ${srvId} -lt ${serviceCnt} ]; do
+	configLine=${serviceConfigArr[${srvId}]};
+	srvConfig=(${configLine//,/ });
+	text=${text}"${srvConfig[${INSTANCE_NAME}]}\n";
+	srvId=$((srvId + 1));
+    done;
+    echo -e ${text}
+
+}
 function fetchCsvConfigFile(){
     serviceCnt=0
     first=1
@@ -83,7 +97,7 @@ malformed container csvConfig line for one of the following parameters :\
 	bindingPort="";
 	msgSrv=""
     fi
-    echo -e "\n\nDeploy INSTANCE=${instanceName}  IMAGE=${dockerImage} on ${sshIp} " ${msgSrv};
+    echo -e "\n\nDeploy INSTANCE=${instanceName}  IMAGE=${dockerFullImageName} on ${sshIp} " ${msgSrv};
 }
 
 function stopAndRemoveContainer() {
@@ -110,12 +124,13 @@ function deployContainer(){
     startContainer
 }
 
+#fetch containers deployment config from file
+fetchCsvConfigFile
+
 #fetch and check input
 if [ $# -lt 1 ]; then
     printUsage
 fi
-#fetch containers deployment config from file
-fetchCsvConfigFile
 
 #stop->remove-deploy each container name defined by user input
 for dockerInstanceName in $@; do
