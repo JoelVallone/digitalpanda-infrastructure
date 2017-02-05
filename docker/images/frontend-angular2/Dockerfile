@@ -12,11 +12,15 @@ RUN  \
   apt-get install -y nodejs && \
   rm -rf /var/lib/apt/lists/*
 
-RUN cd /opt && \
-    git clone https://github.com/JoelVallone/digitalpanda-frontend.git &&  \
-    cd ./digitalpanda-frontend  && \
-    npm install
+RUN  \
+     npm install http-server -g
 
+#RUN cd /opt && \
+#    git clone https://github.com/JoelVallone/digitalpanda-frontend.git   &&  \
+#    cd ./digitalpanda-frontend  && \
+#    npm install
+
+COPY digitalpanda-frontend /opt/digitalpanda-frontend
 COPY entrypoint.sh /opt/entrypoint.sh
 
 ENTRYPOINT /opt/entrypoint.sh

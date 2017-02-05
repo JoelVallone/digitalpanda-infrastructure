@@ -1,7 +1,6 @@
 #!/bin/bash
 
-mkdir -p ${SHARE_FOLDER}/npm/logs
+mkdir -p ${SHARE_FOLDER}/http-server/logs
 
 echo "starting npm server"
-cd /opt/digitalpanda-frontend
-npm run start &> ${SHARE_FOLDER}/npm/logs/stdout.log;
+http-server -a 0.0.0.0 -p 8000 /opt/digitalpanda-frontend &> ${SHARE_FOLDER}/http-server/logs/digitalpanda-frontend.log
