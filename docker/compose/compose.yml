@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  dyndnsclient:
+    container_name: dyndnsclient
+    restart: always
+    build: ../images/dyndnsclient
+    command: /opt/entrypoint.sh
+    networks:
+      - client-tier
+
+networks:
+  client-tier:
+    driver: bridge

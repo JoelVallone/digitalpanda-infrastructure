@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ubuntu
 MAINTAINER Joel Vallone <joel.vallone@gmail.com>
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
