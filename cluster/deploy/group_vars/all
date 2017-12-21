@@ -1,0 +1,6 @@
+---
+
+authorized_keys_folder: "/home/jva/Documents/frij/code/infrastructure/authorized_keys"
+
+cluster_config_user: panda-config
+cluster_config_domain_name: lab.digitalpanda.org

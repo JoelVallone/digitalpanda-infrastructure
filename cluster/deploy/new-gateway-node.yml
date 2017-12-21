@@ -1,0 +1,10 @@
+---
+## Setup a node as network bridge
+
+- hosts: bridges
+  vars_files:
+    - host_vars/all
+  
+  roles: 
+    - cluster-node-base
+    - bridge

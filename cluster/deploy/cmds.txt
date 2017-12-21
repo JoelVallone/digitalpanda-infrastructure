@@ -1,0 +1,4 @@
+ansible-playbook some-playbook.yml --inventory-file=cluster-inventory
+
+--syntax-check
+--ask-sudo-pass
