@@ -1,6 +1,31 @@
 version: "2"
 
 services:
+  frontend:
+    container_name: frontend
+    restart: always
+    build: ../images/frontend-angular2
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_DEV=development
+    depends_on:
+      - backend
+    command: /opt/entrypoint.sh
+    networks:
+      - front-tier
+      - back-tier
+
+  backend:
+    container_name: backend
+    restart: always
+    build: ../images/backend-java
+    ports:
+      - "8080:8080"
+    command: /opt/entrypoint.sh
+    networks:
+      - back-tier
+
   dyndnsclient:
     container_name: dyndnsclient
     restart: always
@@ -11,4 +36,8 @@ services:
 
 networks:
   client-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
+  front-tier:
     driver: bridge
