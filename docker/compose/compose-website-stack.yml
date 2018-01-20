@@ -26,17 +26,7 @@ services:
     networks:
       - back-tier
 
-  dyndnsclient:
-    container_name: dyndnsclient
-    restart: always
-    build: ../images/dyndnsclient
-    command: /opt/entrypoint.sh
-    networks:
-      - client-tier
-
 networks:
-  client-tier:
-    driver: bridge
   back-tier:
     driver: bridge
   front-tier:
