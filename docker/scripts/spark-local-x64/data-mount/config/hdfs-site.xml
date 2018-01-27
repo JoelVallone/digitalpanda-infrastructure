@@ -19,11 +19,11 @@
 <configuration>
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>/opt/hadoop/hdfs/master/data</value>
+    <value>/opt/hadoop/ext/hdfs/master/data</value>
   </property>
   <property>
     <name>dfs.datanode.name.dir</name>
-    <value>/opt/hadoop/hdfs/slave/data</value>
+    <value>/opt/hadoop/ext/hdfs/slave/data</value>
   </property>
   <property>
     <name>dfs.permissions.enabled</name>
