@@ -21,13 +21,13 @@ function clearDataDirs {
     sudo rm -rf $SCRIPT_FOLDER/data-mount/hdfs/master/data \
      $SCRIPT_FOLDER/data-mount/hdfs/slave/data \
      $SCRIPT_FOLDER/data-mount/yarn/slave/data \
-     $SCRIPT_FOLDER/data-mount/logs
+     $SCRIPT_FOLDER/data-mount/log
 }
 
 function createDataDirs {
     mkdir -p $SCRIPT_FOLDER/data-mount/hdfs/master/data
     mkdir -p $SCRIPT_FOLDER/data-mount/hdfs/slave/data
-    mkdir -p $SCRIPT_FOLDER/data-mount/logs
+    mkdir -p $SCRIPT_FOLDER/data-mount/log
 }
 
 function msg {
