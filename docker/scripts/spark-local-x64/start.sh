@@ -3,6 +3,8 @@
 
 SCRIPT_FOLDER="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
 DOCKER_IMAGES=$SCRIPT_FOLDER/../../images
+SPARK_VERSION=spark-2.3.0
+SPARK_NAME=$SPARK_VERSION-bin-hadoop2.7
 
 function cleanup {
 msg "Stop and remove all containers"
@@ -41,7 +43,7 @@ echo -e "" $txt
 #trap cleanup EXIT
 trap cleanup SIGQUIT
 
-echo "STARTING SPARK LOCALLY"
+echo "STARTING HADOOP LOCALLY"
 cleanup
 clearDataDirs || true
 createDataDirs
@@ -76,7 +78,7 @@ YARN_SLAVE_DOCKER_ID=$(sudo docker run \
     -d -t hadoop:latest)
 
 
-msg "Start Spark cluster"
+msg "Start Hadoop cluster"
 echo -e "\n\n==> START HDFS"
 sudo docker exec hadoop-hdfs-master bash -c '"$HADOOP_PREFIX"/bin/hdfs namenode -format hadoop-hdfs' 
 sudo docker exec hadoop-hdfs-master bash -c '"$HADOOP_PREFIX"/sbin/hadoop-daemon.sh start namenode' 
@@ -85,12 +87,30 @@ echo -e "\n\n==> START YARN"
 sudo docker exec hadoop-yarn-master bash -c '"$HADOOP_PREFIX"/sbin/yarn-daemon.sh  start resourcemanager'
 sudo docker exec hadoop-yarn-slave bash -c '"$HADOOP_PREFIX"/sbin/yarn-daemon.sh  start nodemanager'
 
+if [ ! -d ${SPARK_NAME} ]; then
+    msg "DOWNLOAD SPARK : ${SPARK_NAME}"
+    wget http://mirror.switch.ch/mirror/apache/dist/spark/${SPARK_VERSION}/${SPARK_NAME}.tgz
+    tar -zxf ${SPARK_NAME}.tgz
+    rm ${SPARK_NAME}.tgz
+fi
+
+msg "EXPORT ENVIRONMENT VARIABLES"
+export HADOOP_CONF_DIR=$DOCKER_IMAGES/hadoop/default-config/
+export YARN_CONF_DIR=$DOCKER_IMAGES/hadoop/default-config/
+
 echo -e "\n\n"
-msg "STARTED SPARK LOCALLY: "
+msg "STARTED HADOOP LOCALLY: "
 sudo docker ps
 echo "=============================================="
 echo " -> hdfs namenode page: http://127.0.0.1:50070"
 echo " -> yarn resourcemanager page: http://127.0.0.1:8088"
-
-firefox http://127.0.0.1:50070 http://127.0.0.1:8088
-
+echo " -> spark UI when task running: http://192.168.0.38:4040"
+echo " -> spark cluster-mode command example: "
+echo "./${SPARK_NAME}/bin/spark-submit --class org.apache.spark.examples.SparkPi \
+    --master yarn \
+    --deploy-mode client \
+    --driver-memory 512m \
+    --executor-memory 512m \
+    --executor-cores 1 \
+    --queue default \
+    ./${SPARK_NAME}/examples/jars/spark-examples*.jar 20000"
