@@ -7,15 +7,17 @@
     name: "{{ cluster_config_user }}"
     comment: "Cluster configuration account"
     generate_ssh_key: yes
-  when: false
 
-- name: "Enable pasword-less sudo for user panda-config"
+- name: "Check if pasword-less sudo for user {{ cluster_config_user }} is set"
+  become: yes
+  shell: grep "{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL" /etc/sudoers || true
+  register: pasword_less_user
+
+- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
   become: yes
   lineinfile: dest=/etc/sudoers
-              regexp="^{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
               line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
-              state=present
-  when: false
+  when: pasword_less_user != ""
 
 - name: "Register ssh autorized_keys into {{ cluster_config_user }}"
   become: yes
@@ -23,8 +25,7 @@
     user: "{{ cluster_config_user }}"
     state: present
     key: '{{ item }}'
-  with_lines: cat '{{ authorized_keys_folder }}'
-  when: false
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
 
 
 #^127\.0\.1\.1(( |\t)*)((?!\b\.digitalpanda\.org\b).)*$
@@ -33,3 +34,4 @@
   replace: dest=/etc/hosts
            regexp='^(127\.0\.1\.1(( |\t)+)((?!\b\.{{ cluster_config_domain_name }}\b).)+)$'
            replace='\1 {{ ansible_hostname }}.{{ cluster_config_domain_name }}'
+  when: false

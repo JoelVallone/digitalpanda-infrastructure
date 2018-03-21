@@ -1,6 +1,6 @@
 ---
 ## Setup and register a new cluster node for digitalpanda
-- hosts: kubernetes-pod-nodes
+- hosts: new-worker-nodes
   
   roles: 
   - cluster-node-base
