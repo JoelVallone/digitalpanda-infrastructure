@@ -95,22 +95,20 @@ kubernetes (wih kubespray) master (https://kubernetes.io/docs/getting-started-gu
    e) add static dhcp allocation in master node for host (etc/dhcpd.conf)
 
 A) create user panda-worker and generate ssh key
-?) resgister ssh autorized keys
+B) resgister ssh autorized keys
 
-?) Add user to sudo-er without password:
+C) Add user to sudo-er without password:
         > sudo visudo
         > add "<username> ALL=(ALL) NOPASSWD:ALL" at the bottom of the file
 
-?) Configure domain name:
+D) Configure domain name:
    >sudo vi /etc/hosts
    127.0.0.1	pi3-1.lab.digitalpanda.org pi3-1
    
-?) ?? enable ip forwarding ??
-    enable ip forwarding in /etc/sysctl.conf
-    >net.ipv4.ip_forward = 1
-    
-?) delete "pirate" account if exists
-    
+?) set gateway dns ip, enable iptables, insecure registry ip in docker config /etc/systemd/system/docker.service.d
+
+?) 
+
 
 
 ============ info ======================== 
@@ -119,6 +117,7 @@ A) create user panda-worker and generate ssh key
     >ansible configuration file : .kubespray/ansible.cfg
  ansible:
     >http://docs.ansible.com/ansible/latest/intro.html
+    >ansible-playbook new-worker-node-pi3-hypriot.yml --inventory=cluster-inventory --tags=uut
  iptables:
     >iptables -t nat -L -n -v
  ssh: 
@@ -141,7 +140,9 @@ A) create user panda-worker and generate ssh key
  dns lookups:
     >dig google.com @192.168.1.1
  docker:
-    docker exec -it [container-id] bash
+    See cmd.txt in docker folder...
+
+    
 
 
 

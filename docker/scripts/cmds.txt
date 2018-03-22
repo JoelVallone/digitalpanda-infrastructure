@@ -1,7 +1,0 @@
-sudo docker tag 23cb15b0fcec webserver
-sudo docker build -t webserver:latest .
-sudo docker run -p 192.168.0.102:8080:8080 -t -i webserver:latest /bin/bash
-sudo docker run -d -p 192.168.0.102:8080:8080 webserver:latest
-sudo docker run -d dyndnsclient:latest
-curl http://somehostname:5000/v2/_catalog
-sudo docker build -t hadoop-hdfs:latest . && sudo docker run -ti hadoop-hdfs:latest /bin/bash
