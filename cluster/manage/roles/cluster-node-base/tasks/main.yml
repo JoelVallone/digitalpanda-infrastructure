@@ -35,10 +35,13 @@
     dest=/etc/resolv.conf
     insertbefore=BOF
     line="nameserver {{ dns_server_ip }}"
-
+    
+- name: "Disable dns server update"
+  become: yes
+  shell: chattr +i /etc/resolv.conf
+    
 - name: "copy custom Docker configuration"
   become: yes
   template:
     src: templates/docker/daemon.json.j2
     dest: /etc/docker/daemon.json
-    

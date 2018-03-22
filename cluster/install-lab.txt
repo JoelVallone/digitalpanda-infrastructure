@@ -127,6 +127,7 @@ D) Configure domain name:
     >release : dhclient -r
     >lease: dhclient wlan0
     >cat /var/lib/dhcp3/dhclient.leases
+    >cat /var/lib/dhcp/dhclient.etho.leases
  list ip on network:
     >nmap -sP 192.168.0.0/24
  list gateways:
