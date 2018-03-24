@@ -1,0 +1,17 @@
+---
+- name: "Start registry image"
+  become: yes
+  docker:
+    name: registry
+    state: started
+    image: registry:2
+    volumes:
+      - "{{host_registry_storage_path}}:/var/lib/registry"
+    ports:
+      - "5000:5000"
+    restart_policy: always
+
+- name: "Check registry reachable"
+  uri:
+    url:  "http://{{docker_registry.fqdn}}:5000/v2/_catalog"
+    status_code: 200    

@@ -1,0 +1,11 @@
+---
+- include: install-repository.yml
+  tags:
+    - docker-repo,
+    - docker-repo:install
+
+- include: populate-repository.yml
+  tags:
+    - uut,
+    - docker-repo
+    - docker-repo:populate

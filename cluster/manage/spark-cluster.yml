@@ -1,0 +1,13 @@
+---
+## Setup and start a spark using : docker, hypriot, raspberry-pi-3-b:workers, x64:master
+
+- hosts: master-node
+  roles:
+    - hadoop-yarn-ressourcemanager
+    - hadoop-hdfs-namenode
+
+#- hosts: worker-nodes
+#  roles:
+#    - hadoop-yarn-nodemanager
+#    - hadoop-hdfs-datanode
+

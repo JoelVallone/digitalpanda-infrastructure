@@ -1,0 +1,16 @@
+---
+- name: "Pull infrastructure code from {{ infrastructure_repo.clone_url }}"
+  git:
+    repo: "{{ infrastructure_repo.clone_url }}"
+    dest: "{{ infrastructure_repo.target_path }}"
+  tags:
+    - uut
+
+- name: "Build hadoop docker image"
+  docker:
+    path: "{{ docker_images }}/hadoop"
+    name: fanless1.digitalpanda.org:5000/hadoop
+    tag: latest
+    push: yes
+  when: false
+  #x64-nodes[0]

@@ -1,6 +1,6 @@
 ---
 localnode ansible_host=127.0.0.1 ansible_user=jva
-fanless1.digitalpanda.org ansible_host=192.168.0.102 ansible_user=jva
+fanless1.digitalpanda.org ansible_host=192.168.0.102
 pi3-1.lab.digitalpanda.org ansible_host=192.168.0.121
 pi3-2.lab.digitalpanda.org ansible_host=192.168.0.122
 pi3-3.lab.digitalpanda.org ansible_host=192.168.0.123
@@ -9,10 +9,19 @@ pi3-4.lab.digitalpanda.org ansible_host=192.168.0.124
 [networkservers]
 fanless1.digitalpanda.org
 
-[bridges]
+[bridge]
 fanless1.digitalpanda.org ext_interface=eno1 int_interface=enp2s0
 
-[master-nodes]
+[x64-nodes]
+fanless1.digitalpanda.org
+
+[arm-nodes]
+pi3-1.lab.digitalpanda.org
+pi3-2.lab.digitalpanda.org
+pi3-3.lab.digitalpanda.org
+pi3-4.lab.digitalpanda.org
+
+[master-node]
 fanless1.digitalpanda.org
 
 [worker-nodes]
