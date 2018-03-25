@@ -1,7 +1,7 @@
 ---
 - name: "Start registry image"
   become: yes
-  docker:
+  docker_container:
     name: registry
     state: started
     image: registry:2
