@@ -1,0 +1,2 @@
+- enhance hadoop-common parametrization
+- fix dns revers lookup + enable dfs.namenode.datanode.registration.ip-hostname-check

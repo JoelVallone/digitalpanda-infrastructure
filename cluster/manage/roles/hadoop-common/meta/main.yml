@@ -1,4 +1,4 @@
 ---
 allow_duplicates: true
 dependencies:
-  - { role: docker-registry, required_containers: ['hadoop', 'hadoop-arm'] }
+  - { role: docker-registry, required_containers: ['hadoop', 'hadoop-arm'], when: clear_cluster == false }

@@ -1,2 +1,3 @@
 ---
-hadoop_container_name: "hadoop-default"
+hadoop_container_name: ""
+clear_cluster: false

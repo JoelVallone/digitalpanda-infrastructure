@@ -1,4 +1,11 @@
 ---
+- name: "Remove hadoop root directory on host"
+  become: true
+  file:
+    path: "{{hadoop.host.exposed_folder.base}}"
+    state: absent
+  when: clear_cluster == true
+
 - name: "Create hadoop directories on host"
   file:
     path: "{{item}}"
@@ -12,7 +19,8 @@
       - "{{hadoop.host.exposed_folder.log}}"
       - "{{hadoop.host.exposed_folder.data_master}}"
       - "{{hadoop.host.exposed_folder.data_slave}}"
-
+  when: clear_cluster == false
+  
 - name: "Add hadoop global configuration files on host"
   template:
     src: "{{item}}.j2"
@@ -21,19 +29,22 @@
     - core-site.xml
     - hdfs-site.xml
     - yarn-site.xml
+  when: clear_cluster == false
 
 - set_fact:
     hadoop_image_name: "{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}"
+  when: hadoop_container_name != ""
 
-- name: "Pull and (re)start {{hadoop_image_name}} container with name: {{ hadoop_container_name }} "
+- name: "Pull image {{hadoop_image_name}} and (re)start container with name {{ hadoop_container_name }} "
   become: yes
   docker_container:
     name: "{{hadoop_container_name}}"
     state: started
     restart: yes
-    image: "{{ docker_registry.ip }}:{{ docker_registry.port }}/{{hadoop_image_name}}:latest"
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{{hadoop_image_name}}:latest"
     volumes:
       - "{{hadoop.host.exposed_folder.base}}:{{hadoop.container.exposed_folder.base}}"
     network_mode: host
     restart_policy: no
     tty: yes
+  when: hadoop_container_name != ""

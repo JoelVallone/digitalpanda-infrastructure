@@ -12,6 +12,9 @@ fanless1.digitalpanda.org
 [bridge]
 fanless1.digitalpanda.org ext_interface=eno1 int_interface=enp2s0
 
+[docker-registry]
+fanless1.digitalpanda.org
+
 [x64-build-node]
 fanless1.digitalpanda.org
 
@@ -22,10 +25,10 @@ pi3-2.lab.digitalpanda.org
 fanless1.digitalpanda.org
 
 [hadoop-worker-nodes]
-pi3-1.lab.digitalpanda.org
+#pi3-1.lab.digitalpanda.org
 pi3-2.lab.digitalpanda.org
-pi3-3.lab.digitalpanda.org
-pi3-4.lab.digitalpanda.org
+#pi3-3.lab.digitalpanda.org
+#pi3-4.lab.digitalpanda.org
 
 [new-worker-nodes]
 #pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot

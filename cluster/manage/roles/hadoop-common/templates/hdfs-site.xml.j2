@@ -18,11 +18,19 @@
 
 <configuration>
   <property>
+    <name>dfs.namenode.rpc-bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
     <name>dfs.namenode.name.dir</name>
     <value>{{hadoop.container.exposed_folder.data_master}}</value>
   </property>
   <property>
     <name>dfs.datanode.name.dir</name>
+    <value>{{hadoop.container.exposed_folder.data_slave}}</value>
+  </property>
+   <property>
+    <name>dfs.datanode.data.dir</name>
     <value>{{hadoop.container.exposed_folder.data_slave}}</value>
   </property>
   <property>
