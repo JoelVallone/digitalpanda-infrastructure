@@ -3,8 +3,9 @@
 
 - hosts: hadoop-master-node
   roles:
-#    - hadoop-yarn-ressourcemanager
     - hadoop-hdfs-namenode
+    - hadoop-yarn-resourcemanager
+
 
 #- hosts: hadoop-worker-nodes
 #  roles:

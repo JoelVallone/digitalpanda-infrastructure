@@ -22,6 +22,14 @@
     <value>{{hadoop.yarn.ressourcemanager.host_fqdn}}</value>
   </property>
   <property>
+    <name>yarn.resourcemanager.webapp.address</name>
+    <value>0.0.0.0:8088</value>
+  </property>
+  <property>
+    <name>yarn.log.dir</name>
+    <value>{{hadoop.container.exposed_folder.log}}</value>
+  </property>
+  <property>
     <name>yarn.nodemanager.local-dirs</name>
     <value>{{hadoop.container.exposed_folder.data_slave}}</value>
   </property>

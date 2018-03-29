@@ -8,7 +8,7 @@ infrastructure_repo:
   clone_url: "https://github.com/JoelVallone/digitalpanda-infrastructure.git"
 
 dns_server_ip : 192.168.1.1
-docker_registry :
+docker_registry : 
   ip: 192.168.1.1
   port: 5000
   fqdn: fanless1.digitalpanda.org

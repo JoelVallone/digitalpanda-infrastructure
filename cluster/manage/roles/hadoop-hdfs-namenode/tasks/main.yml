@@ -1,17 +1,4 @@
 ---    
-- name: "Pull and start hadoop-hdfs-namenode container"
-  become: yes
-  docker_container:
-    name: hadoop-hdfs-namenode
-    state: started
-    restart: yes
-    image: "{{ docker_registry.ip }}:{{ docker_registry.port }}/hadoop:latest"
-    volumes:
-      - "{{hadoop.host.exposed_folder.base}}:{{hadoop.container.exposed_folder.base}}"
-    network_mode: host
-    restart_policy: no
-    tty: yes
-
 - name: "Format hdfs partion"
   become: yes
   shell: docker exec hadoop-hdfs-namenode bash -l -c '{{hadoop.container.install_folder}}/bin/hdfs namenode -format -force  hadoop-hdfs > {{hadoop.container.exposed_folder.log}}/hdfs-format.log'
