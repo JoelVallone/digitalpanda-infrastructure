@@ -1,3 +1,4 @@
 ---
 dependencies:
   - { role: docker-registry, required_containers: ['hadoop', 'hadoop-arm'] }
+  - { role: hadoop-common }

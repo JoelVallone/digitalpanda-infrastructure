@@ -11,4 +11,15 @@
     name: "{{ docker_registry.ip }}:{{ docker_registry.port }}/hadoop"
     tag: latest
     push: yes
-  when: inventory_hostname in groups['x64-build-node']
+  when:
+    - inventory_hostname in groups['x64-build-node']
+    - '"hadoop" in required_containers'
+ 
+- name: "Build hadoop-arm docker image"
+  become: yes
+  docker_image:
+    path: "{{ docker_images }}/hadoop-arm"
+    name: "{{ docker_registry.ip }}:{{ docker_registry.port }}/hadoop-arm"
+    tag: latest
+    push: yes
+  when: false

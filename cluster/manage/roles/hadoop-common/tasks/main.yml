@@ -1,0 +1,24 @@
+---
+- name: "Create hadoop directories on host"
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: "{{cluster_config_user}}"
+    group: "{{cluster_config_user}}"
+    mode: 0775
+  with_items:
+      - "{{hadoop.host.exposed_folder.base}}"
+      - "{{hadoop.host.exposed_folder.config}}"
+      - "{{hadoop.host.exposed_folder.log}}"
+      - "{{hadoop.host.exposed_folder.data_master}}"
+      - "{{hadoop.host.exposed_folder.data_slave}}"
+
+- name: "Add hadoop global configuration files on host"
+  template:
+    src: "{{item}}.j2"
+    dest: "{{hadoop.host.exposed_folder.config}}/{{item}}"
+  with_items:
+    - core-site.xml
+    - hdfs-site.xml
+    - yarn-site.xml
+
