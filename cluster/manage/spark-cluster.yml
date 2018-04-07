@@ -5,17 +5,15 @@
   roles:
    - { role: "hadoop-common", clear_cluster: true}
 
-
-
 - hosts: hadoop-master-node
   roles:
     - hadoop-hdfs-namenode
     - hadoop-yarn-resourcemanager
 
-
 - hosts: hadoop-worker-nodes
   roles:
+    - hadoop-yarn-nodemanager
     - hadoop-hdfs-datanode
-#    - hadoop-yarn-nodemanager
+
 
 

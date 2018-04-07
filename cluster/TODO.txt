@@ -1,2 +1,6 @@
+- try to submit a spark job
+- update pi3-1 to new hypriot OS version OR troublshoot docker registry
+- fix datanode display httpAddress to host ip instead of localhost in namenode ui
+- fix ressource and node managers logging => not to default location container-unreachable
 - enhance hadoop-common parametrization
-- fix dns revers lookup + enable dfs.namenode.datanode.registration.ip-hostname-check
+- fix dns reverse lookup + enable dfs.namenode.datanode.registration.ip-hostname-check

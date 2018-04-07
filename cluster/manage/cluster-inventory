@@ -25,10 +25,10 @@ pi3-2.lab.digitalpanda.org
 fanless1.digitalpanda.org
 
 [hadoop-worker-nodes]
-#pi3-1.lab.digitalpanda.org
+pi3-1.lab.digitalpanda.org
 pi3-2.lab.digitalpanda.org
-#pi3-3.lab.digitalpanda.org
-#pi3-4.lab.digitalpanda.org
+pi3-3.lab.digitalpanda.org
+pi3-4.lab.digitalpanda.org
 
 [new-worker-nodes]
 #pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot

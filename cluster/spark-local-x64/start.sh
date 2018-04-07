@@ -114,3 +114,8 @@ echo "./${SPARK_NAME}/bin/spark-submit --class org.apache.spark.examples.SparkPi
     --executor-cores 1 \
     --queue default \
     ./${SPARK_NAME}/examples/jars/spark-examples*.jar 20000"
+
+
+# export HADOOP_CONF_DIR=/home/panda-config/hadoop/config/
+# one-liner: "./spark-2.3.0-bin-hadoop2.7/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode client --driver-memory 512m  --executor-memory 2048m --executor-cores 3 --queue default  ./spark-2.3.0-bin-hadoop2.7/examples/jars/spark-examples*.jar 20000"
+

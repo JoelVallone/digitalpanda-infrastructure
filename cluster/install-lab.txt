@@ -123,6 +123,7 @@ D) Configure domain name:
  ssh: 
     >ssh -p27000 bffrij@digitalpanda.org
     >ssh -p27002 bffrij@192.168.0.102
+    > ssh -L 50075:192.168.1.102:50074 192.168.0.102 (access to 192.168.1.102:50074 by forwarding trafic from loclahost:50075 to ssh server at 192.168.0.102 which pushes to 192.168.1.102) 
  dhcp client:
     >release : dhclient -r
     >lease: dhclient wlan0
