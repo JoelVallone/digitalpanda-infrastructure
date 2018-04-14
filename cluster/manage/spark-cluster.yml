@@ -1,13 +1,19 @@
 ---
 ## Setup and start a spark using : docker, hypriot, raspberry-pi-3-b:workers, x64:master
 
-- hosts: master-node
+- hosts: hadoop-master-node hadoop-worker-nodes
   roles:
-    - hadoop-yarn-ressourcemanager
-#    - hadoop-hdfs-namenode
+   - { role: "hadoop-common", clear_cluster: true}
 
-#- hosts: worker-nodes
-#  roles:
-#    - hadoop-yarn-nodemanager
-#    - hadoop-hdfs-datanode
+- hosts: hadoop-master-node
+  roles:
+    - hadoop-hdfs-namenode
+    - hadoop-yarn-resourcemanager
+
+- hosts: hadoop-worker-nodes
+  roles:
+    - hadoop-yarn-nodemanager
+    - hadoop-hdfs-datanode
+
+
 

@@ -1,0 +1,4 @@
+---
+dependencies:
+  - { role: hadoop-common, hadoop_container_name: 'hadoop-yarn-resourcemanager' }
+

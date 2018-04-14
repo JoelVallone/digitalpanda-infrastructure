@@ -1,0 +1,27 @@
+---
+hadoop :
+  host:
+    exposed_folder :
+      base: "/home/{{cluster_config_user}}/hadoop"
+      config: "/home/{{cluster_config_user}}/hadoop/config"
+      log: "/home/{{cluster_config_user}}/hadoop/log"
+      data_master: "/home/{{cluster_config_user}}/hadoop/hdfs/master/data"
+      data_slave: "/home/{{cluster_config_user}}/hadoop/hdfs/slave/data"
+
+  container:
+    base_folder: "/opt/hadoop"
+    install_folder: "/opt/hadoop/hadoop-2.9.0"
+    exposed_folder:
+      base: "/opt/hadoop/ext"
+      config: "/opt/hadoop/ext/config"
+      log: "/opt/hadoop/ext/log"
+      data_master: "/opt/hadoop/ext/hdfs/master/data"
+      data_slave: "/opt/hadoop/ext/hdfs/slave/data"
+
+  hdfs:
+    namenode:
+      host_fqdn: "{{groups['hadoop-master-node'][0]}}"
+
+  yarn:
+    ressourcemanager:
+     host_fqdn: "{{groups['hadoop-master-node'][0]}}"

@@ -1,16 +1,16 @@
 ---
-cluster_config_user: panda-config
+ansible_ssh_user: panda-config
+cluster_config_user: "{{ansible_ssh_user}}"
 cluster_config_domain_name: lab.digitalpanda.org
-ansible_ssh_user: "{{cluster_config_user}}"
 
 infrastructure_repo:
-  target_path: "/home/{{cluster_config_user}}/digitalpanda"
+  target_path: "/home/{{ansible_ssh_user}}/digitalpanda"
   clone_url: "https://github.com/JoelVallone/digitalpanda-infrastructure.git"
 
 dns_server_ip : 192.168.1.1
-docker_registry :
+docker_registry : 
   ip: 192.168.1.1
   port: 5000
-  fqdn: localhost
+  fqdn: fanless1.digitalpanda.org
 
-docker_images : "{{ infrastructure_repo.target_path  }}/docker/images/"
+docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"

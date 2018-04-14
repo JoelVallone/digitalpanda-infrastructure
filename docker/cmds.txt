@@ -27,3 +27,4 @@ sudo cat >> /etc/docker/daemon.json
 also see /etc/default/docker or /ets/systemd/system/docker.service.d/
 service docker restart
 
+sudo docker exec -ti hadoop-hdfs-namenode /bin/bash

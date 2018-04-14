@@ -1,0 +1,6 @@
+---    
+- name: "Start yarn nodemanager"
+  become: yes
+  shell: docker exec hadoop-yarn-nodemanager bash -l -c '{{hadoop.container.install_folder}}/sbin/yarn-daemon.sh start nodemanager > {{hadoop.container.exposed_folder.log}}/yarn-nodemanager-start.log'
+
+

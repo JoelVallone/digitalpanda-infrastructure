@@ -1,7 +1,6 @@
 FROM hypriot/rpi-java 
 MAINTAINER Joel Vallone <joel.vallone@gmail.com>
 
-ENV JAVA_HOME  /usr/lib/jvm/java-8-openjdk-amd64
 ENV JAVA_HEAP_SIZE 2048
 ENV HADOOP_BASE  /opt/hadoop
 ENV HADOOP_PREFIX ${HADOOP_BASE}/hadoop-2.9.0

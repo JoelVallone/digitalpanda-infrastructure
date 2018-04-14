@@ -1,0 +1,10 @@
+---    
+- name: "Format hdfs partion"
+  become: yes
+  shell: docker exec hadoop-hdfs-namenode bash -l -c '{{hadoop.container.install_folder}}/bin/hdfs namenode -format -force  hadoop-hdfs > {{hadoop.container.exposed_folder.log}}/hdfs-format.log'
+
+- name: "Start hdfs namenode"
+  become: yes
+  shell: docker exec hadoop-hdfs-namenode bash -l -c '{{hadoop.container.install_folder}}/sbin/hadoop-daemon.sh start namenode > {{hadoop.container.exposed_folder.log}}/hdfs-namenode-start.log'
+
+

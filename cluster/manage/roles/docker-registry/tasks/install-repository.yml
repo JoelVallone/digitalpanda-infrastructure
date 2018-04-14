@@ -1,4 +1,5 @@
 ---
+
 - name: "Start registry image"
   become: yes
   docker_container:
@@ -10,8 +11,9 @@
     ports:
       - "5000:5000"
     restart_policy: always
+  when: inventory_hostname in groups['docker-registry']
 
 - name: "Check registry reachable"
   uri:
     url:  "http://{{docker_registry.fqdn}}:5000/v2/_catalog"
-    status_code: 200    
+    status_code: 200
