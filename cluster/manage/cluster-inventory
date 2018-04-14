@@ -12,17 +12,16 @@ fanless1.digitalpanda.org
 [bridge]
 fanless1.digitalpanda.org ext_interface=eno1 int_interface=enp2s0
 
-[x64-nodes]
-fanless1.digitalpanda.org
+[x64-build-node]
+#fanless1.digitalpanda.org
+localnode
 
-[arm-nodes]
-pi3-1.lab.digitalpanda.org
-pi3-2.lab.digitalpanda.org
-pi3-3.lab.digitalpanda.org
-pi3-4.lab.digitalpanda.org
+[arm-build-node]
+#pi3-2.lab.digitalpanda.org
 
 [master-node]
-fanless1.digitalpanda.org
+#fanless1.digitalpanda.org
+localnode
 
 [worker-nodes]
 pi3-1.lab.digitalpanda.org
