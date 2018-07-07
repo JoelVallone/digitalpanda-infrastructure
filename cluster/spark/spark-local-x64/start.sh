@@ -2,7 +2,7 @@
 #set -e
 
 SCRIPT_FOLDER="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
-DOCKER_IMAGES=$SCRIPT_FOLDER/../../images
+DOCKER_IMAGES=$SCRIPT_FOLDER/../../../docker/images
 SPARK_VERSION=spark-2.3.0
 SPARK_NAME=$SPARK_VERSION-bin-hadoop2.7
 
