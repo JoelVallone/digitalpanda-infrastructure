@@ -28,9 +28,9 @@ services:
 
   database:
     container_name: cassandra-single-node
-    restart: "no"
+    restart: always
     environment:
-      - CASSANDRA_AUTO_START=true
+      CASSANDRA_AUTO_START: 'true'
     build: ../images/cassandra
     network_mode: host
 #    ports:
@@ -41,8 +41,6 @@ services:
 #      - "9160:9160"
 #      - "9142:9142"
     command: /opt/entrypoint.sh
-#    networks:
-#      - back-tier
 
 networks:
   back-tier:
