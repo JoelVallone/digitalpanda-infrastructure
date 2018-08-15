@@ -8,19 +8,22 @@ function startCassandra {
     export JVM_OPTS
 
     ${CASSANDRA_BIN}/bin/cassandra -R -p ${CASSANDRA_CONF_DIR}/cassandra.pid &> /dev/null
+    chmod a+r ${CASSANDRA_CONF_DIR}/cassandra.pid
 }
 
 function stopCassandra {
-    kill $(${CASSANDRA_CONF_DIR}/cassandra.pid)
+    kill $(cat ${CASSANDRA_CONF_DIR}/cassandra.pid)
     sleep 5
+    echo "cassandra stopped"
 }
 
 if [ "${CONTAINER_AUTO_START:-false}" = "true" ]; then
+    trap stopCassandra SIGTERM
+    trap stopCassandra SIGINT
     startCassandra
     echo "cassandra started - press enter to stop"
     read val
     stopCassandra
-    echo "cassandra stopped"
 else
     echo "container started - press enter to stop"
     read val
