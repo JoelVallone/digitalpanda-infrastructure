@@ -1,6 +1,10 @@
 *~
 environment.sh
 services.config.csv
+*.retry
+*.orig
+*.*#
+.idea/
 startContainers.sh
 docker/images/backend-java/backend.application-0.1.0.jar
 docker/images/frontend-angular2/digitalpanda-frontend/

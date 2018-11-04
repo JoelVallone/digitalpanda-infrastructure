@@ -1,6 +1,6 @@
 #!/bin/bash
 SCRIPT_FOLDER="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
-ANSIBLE_FOLDER=$SCRIPT_FOLDER/../manage
+ANSIBLE_FOLDER=$SCRIPT_FOLDER/../ansible
 
 cd $ANSIBLE_FOLDER
 rm -rf ~/.ansible

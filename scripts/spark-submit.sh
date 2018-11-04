@@ -4,7 +4,7 @@ ROOT_FOLDER="${SCRIPT_FOLDER}/.."
 SPARK_VERSION=spark-2.3.0
 SPARK_NAME=$SPARK_VERSION-bin-hadoop2.7
 SPARK_FOLDER=${ROOT_FOLDER}/${SPARK_NAME}
-HADOOP_CLIENT_CONFIG_FOLDER=${ROOT_FOLDER}/spark/config/client-config
+HADOOP_CLIENT_CONFIG_FOLDER=${ROOT_FOLDER}/cluster-notes/spark/config/client-config
 
 if [ ! -d "../${SPARK_NAME}" ]; then
     echo "DOWNLOAD SPARK : ${SPARK_NAME}"

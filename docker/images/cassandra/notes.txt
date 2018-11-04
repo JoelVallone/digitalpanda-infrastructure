@@ -2,7 +2,19 @@ online course/tutorial : https://academy.datastax.com/resources/ds201-foundation
 Download cassandra from: http://cassandra.apache.org/download/; http://mirror.switch.ch/mirror/apache/dist/cassandra/3.11.2/apache-cassandra-3.11.2-bin.tar.gz
 
 sudo docker build -t cassandra:latest .
-sudo docker run -e CONTAINER_AUTO_START=true --network host -t -i cassandra:latest
+sudo docker run -d --net=host -t cassandra:latest
+CASSANDRA_SINGLE_NODE_ID=$(sudo docker run \
+    -e CONTAINER_AUTO_START=true
+    --name=cassandra-single-node \
+    -v $SCRIPT_FOLDER/data-mount/:/opt/cassandra/ext \
+    --net=host \
+    -d -t cassandra:latest)
+
+=> CQL
+  DESCRIBE KEYSPACES
+  DESCRIBE TABLES 
+  USE <keyspace-name>
+
 
 
 => Cassandra
