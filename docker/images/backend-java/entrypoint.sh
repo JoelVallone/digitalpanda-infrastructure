@@ -2,8 +2,7 @@
 
 echo "starting jar file"
 java -version
-mkdir ${SHARE_FOLDER}/java/logs
-java -jar /opt/backend.jar &> ${SHARE_FOLDER}/java/logs/digitalpanda-backend.log
+java -jar ${BACKEND_BIN_DIR}/backend.jar &> ${BACKEND_LOG_DIR}/digitalpanda-backend.log
 
 
 

@@ -4,7 +4,7 @@ services:
   frontend:
     container_name: frontend
     restart: always
-    build: ../images/frontend-angular2
+    build: ../images/frontend-angular
     ports:
       - "8000:8000"
     environment:

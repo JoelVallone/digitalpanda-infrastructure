@@ -1,0 +1,46 @@
+---
+
+- name: "Remove cassandra root directory on host"
+  become: true
+  file:
+    path: "{{cassandra.host.base_folder}}"
+    recurse: yes
+    state: absent
+  when: clear_state == true
+
+- name: "Create cassandra directories on host"
+  file:
+    path: "{{item}}"
+    state: directory
+    recurse: yes
+    owner: "{{cluster_config_user}}"
+    group: "{{cluster_config_user}}"
+    mode: 0775
+  with_items: "{{cassandra.host.exposed_folders}}"
+
+- name: "Add cassandra configuration files on host"
+  template:
+    src: "{{item}}.j2"
+    dest: "{{hadoop.host.exposed_folder.config}}/{{item}}"
+  with_items:
+    - cassandra.yaml.j2
+    - logback.xml.j2
+  when: clear_state == true
+
+
+- name: "Pull image 'cassandra' and (re)start container with name 'cassandra'"
+  become: yes
+  docker_container:
+    name: "cassandra"
+    state: started
+    restart: yes
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/cassandra:latest"
+    volumes:
+      - "{{cassandra.host.exposed_folders.log}}:{{cassandra.container.exposed_folders.log}}"
+      - "{{cassandra.host.exposed_folders.conf}}:{{cassandra.container.exposed_folders.conf}}"
+      - "{{cassandra.host.exposed_folders.data_sstables}}:{{cassandra.container.exposed_folders.data_sstables}}"
+      - "{{cassandra.host.exposed_folders.data_commitlog}}:{{cassandra.container.exposed_folders.data_commitlog}}"
+      - "{{cassandra.host.exposed_folders.data_cdc}}:{{cassandra.container.exposed_folders.data_cdc}}"
+    network_mode: host
+    restart_policy: always
+    tty: yes

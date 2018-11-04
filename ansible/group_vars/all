@@ -7,6 +7,16 @@ infrastructure_repo:
   target_path: "/home/{{ansible_ssh_user}}/digitalpanda"
   clone_url: "https://github.com/JoelVallone/digitalpanda-infrastructure.git"
 
+backend_repo:
+  target_path: "/home/{{ansible_ssh_user}}/digitalpanda"
+  host_path: "/home/{{ansible_ssh_user}}/digitalpanda/digitalpanda-backend"
+  clone_url: "https://github.com/JoelVallone/digitalpanda-backend.git"
+
+frontend_repo:
+  target_path: "/home/{{ansible_ssh_user}}/digitalpanda"
+  host_path: "/home/{{ansible_ssh_user}}/digitalpanda/digitalpanda-backend"
+  clone_url: "https://github.com/JoelVallone/digitalpanda-frontend.git"
+
 dns_server_ip : 192.168.1.1
 docker_registry : 
   ip: 192.168.1.1
@@ -14,3 +24,5 @@ docker_registry :
   fqdn: fanless1.digitalpanda.org
 
 docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"
+
+build_code: false

@@ -1,7 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER Joel Vallone <joel.vallone@gmail.com>
 
-ENV SHARE_FOLDER /usr/share
+ENV BASE_DIR /opt/frontend
+ENV LOG_DIR ${BASE_DIR}/log
+ENV BIN_DIR ${BASE_DIR}/bin
 
 RUN  \
    apt-get update && \
@@ -20,7 +22,12 @@ RUN  \
 #    cd ./digitalpanda-frontend  && \
 #    npm install
 
-COPY digitalpanda-frontend /opt/digitalpanda-frontend
-COPY entrypoint.sh /opt/entrypoint.sh
+RUN mkdir -p ${BIN_DIR} && \
+    mkdir -p ${LOG_DIR}
+
+WORKDIR ${BASE_DIR}
+
+COPY digitalpanda-frontend ${BIN_DIR}/digitalpanda-frontend
+COPY entrypoint.sh ${BIN_DIR}/entrypoint.sh
 
 ENTRYPOINT /opt/entrypoint.sh

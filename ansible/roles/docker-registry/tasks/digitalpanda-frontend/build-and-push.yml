@@ -1,0 +1,17 @@
+---
+
+- name: "Pull frontend code from {{ frontend_repo.clone_url }}"
+  git:
+    repo: "{{ frontend_repo.clone_url }}"
+    dest: "{{ frontend_repo.target_path }}"
+
+- name: "Build frontend and copy .js into docker folder"
+  shell: {{ frontend_repo.host_path }}/scripts/build-prod.sh
+
+- name: "Build and push 'digitalpanda-frontend' docker image"
+  become: yes
+  docker_image:
+    path: "{{ docker_images }}/frontend-angular"
+    name: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-frontend"
+    tag: latest
+    push: yes

@@ -1,0 +1,23 @@
+---
+
+- hosts: x64-build-node
+  roles:
+    - { role: docker-registry,
+        required_containers: ['cassandra', 'digitalpanda-backend', 'digitalpanda-frontend'] ,
+        when: build_code == true }
+
+- hosts: cassandra-nodes
+  roles:
+    - casssandra
+
+- hosts: backends
+  roles:
+    - digitalpanda-backend
+
+- hosts: frontends
+  roles:
+    - digitalpanda-frontend
+
+
+
+

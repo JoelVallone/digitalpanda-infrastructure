@@ -1,0 +1,11 @@
+---
+frontend :
+  host:
+    base_folder: "/home/{{cluster_config_user}}/digitalpanda-frontend"
+    exposed_folders :
+      log: "/home/{{cluster_config_user}}/digitalpanda-frontend/log"
+
+  container:
+    base_folder: "/opt/frontend"
+    exposed_folders:
+      log: "/opt/frontend/log"

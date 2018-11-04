@@ -5,13 +5,13 @@ function log {
 }
 
 function startForegroundCassandra {
-    CASSANDRA_CONF=file:///${CASSANDRA_CONF_DIR}
+    CASSANDRA_CONF=file:///${CONF_DIR}
     export CASSANDRA_CONF
 
-    JVM_OPTS="-Dcassandra.logdir=${CASSANDRA_LOG_DIR} -Dlogback.configurationFile=${CASSANDRA_CONF_DIR}/logback.xml"
+    JVM_OPTS="-Dcassandra.logdir=${LOG_DIR} -Dlogback.configurationFile=${CONF_DIR}/logback.xml"
     export JVM_OPTS
-    log "start cassandra"
-    ${CASSANDRA_BIN}/bin/cassandra -f -R -p ${CASSANDRA_CONF_DIR}/cassandra.pid &> /dev/nul
+    log "start cassandra in single-node mode"
+    ${APP_DIR}/bin/cassandra -f -R -p ${CONF_DIR}/cassandra.pid &> /dev/null
 }
 
 function stopCassandra {
@@ -20,15 +20,15 @@ function stopCassandra {
     log "cassandra stop"
 }
 
-#if [ "${CONTAINER_AUTO_START:-false}" = "true" ]; then
+if [ "${CONTAINER_AUTO_START:-false}" = "true" ]; then
     trap stopCassandra SIGTERM
     trap stopCassandra SIGINT
     startForegroundCassandra
     stopCassandra
-#else
-#    log "cassandra container started"
-#    tail -f /dev/null
-#fi
+else
+    log "cassandra container started"
+    tail -f /dev/null
+fi
 
 log "end of entrypoint.sh"
 
