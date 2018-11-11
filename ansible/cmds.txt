@@ -1,3 +1,4 @@
+ansible-playbook digitalpanda-stack.yml --inventory-file=digitalpanda-inventory --extra-vars "build_code=true clear_state=true"
 ansible-playbook some-playbook.yml --inventory-file=cluster-inventory
 
 --syntax-check

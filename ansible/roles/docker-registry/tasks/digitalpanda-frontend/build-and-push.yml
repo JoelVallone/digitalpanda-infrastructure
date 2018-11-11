@@ -6,7 +6,7 @@
     dest: "{{ frontend_repo.target_path }}"
 
 - name: "Build frontend and copy .js into docker folder"
-  shell: {{ frontend_repo.host_path }}/scripts/build-prod.sh
+  shell: "cd {{ frontend_repo.target_path }} && ./scripts/build-prod.sh"
 
 - name: "Build and push 'digitalpanda-frontend' docker image"
   become: yes

@@ -5,7 +5,7 @@
     path: "{{backend.host.base_folder}}"
     recurse: yes
     state: absent
-  when: clear_state == true
+  when: clear_state
 
 - name: "Create digitalpanda-backend directories on host"
   file:
@@ -15,7 +15,7 @@
     owner: "{{cluster_config_user}}"
     group: "{{cluster_config_user}}"
     mode: 0775
-  with_items: "{{backend.host.exposed_folders}}"
+  with_dict: "{{backend.host.exposed_folders}}"
 
 
 - name: "Pull image 'digitalpanda-backend' and (re)start container with name 'digitalpanda-backend'"

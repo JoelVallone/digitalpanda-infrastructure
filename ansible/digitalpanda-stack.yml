@@ -4,19 +4,19 @@
   roles:
     - { role: docker-registry,
         required_containers: ['cassandra', 'digitalpanda-backend', 'digitalpanda-frontend'] ,
-        when: build_code == true }
+        when: build_code}
 
 - hosts: cassandra-nodes
   roles:
-    - casssandra
+   - cassandra
 
-- hosts: backends
-  roles:
-    - digitalpanda-backend
+  #- hosts: backends
+  #roles:
+  #  - digitalpanda-backend
 
-- hosts: frontends
-  roles:
-    - digitalpanda-frontend
+  #- hosts: frontends
+  #roles:
+  #  - digitalpanda-frontend
 
 
 

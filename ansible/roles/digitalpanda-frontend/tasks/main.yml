@@ -15,7 +15,7 @@
     owner: "{{cluster_config_user}}"
     group: "{{cluster_config_user}}"
     mode: 0775
-  with_items: "{{frontend.host.exposed_folders}}"
+  with_dict: "{{frontend.host.exposed_folders}}"
 
 
 - name: "Pull image 'digitalpanda-frontend' and (re)start container with name 'digitalpanda-frontend'"

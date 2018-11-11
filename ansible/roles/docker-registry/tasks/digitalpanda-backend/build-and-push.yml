@@ -6,7 +6,7 @@
     dest: "{{ backend_repo.target_path }}"
 
 - name: "Build backend and copy jar into docker folder"
-  shell: {{ backend_repo.host_path }}/scripts/build.sh
+  shell: "{{ backend_repo.target_path }}/scripts/build.sh"
 
 - name: "Build and push 'digitalpanda-backend' docker image"
   become: yes

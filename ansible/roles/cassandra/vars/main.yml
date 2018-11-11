@@ -1,13 +1,13 @@
 ---
-backend :
+cassandra :
   host:
     base_folder: "/home/{{cluster_config_user}}/cassandra"
     exposed_folders :
       log: "/home/{{cluster_config_user}}/cassandra/log"
-      conf: "/home/{{cluster_config_user}}/conf"
-      data_sstables: "/home/{{cluster_config_user}}/datafile"
-      data_commitlog: "/home/{{cluster_config_user}}/commitlog"
-      data_cdc: "/home/{{cluster_config_user}}/cdc"
+      conf: "/home/{{cluster_config_user}}/cassandra/conf"
+      data_sstables: "/home/{{cluster_config_user}}/cassandra/datafile"
+      data_commitlog: "/home/{{cluster_config_user}}/cassandra/commitlog"
+      data_cdc: "/home/{{cluster_config_user}}/cassandra/cdc"
 
   container:
     base_folder: "/opt/cassandra"

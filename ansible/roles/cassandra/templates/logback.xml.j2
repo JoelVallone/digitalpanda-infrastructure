@@ -28,7 +28,7 @@ appender reference in the root level section below.
   <!-- No shutdown hook; we run it ourselves in StorageService after shutdown -->
 
   <!-- SYSTEMLOG rolling file appender to system.log (INFO level) -->
-  <property scope="local" name="cassandra.logdir" value="{{container.exposed_folders.log}}" />
+  <property scope="local" name="cassandra.logdir" value="{{cassandra.container.exposed_folders.log}}" />
 
 
   <appender name="SYSTEMLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">

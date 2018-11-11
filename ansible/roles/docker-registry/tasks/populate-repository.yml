@@ -4,12 +4,14 @@
     repo: "{{ infrastructure_repo.clone_url }}"
     dest: "{{ infrastructure_repo.target_path }}"
 
+#TODO: npm Build fails
 - include: "digitalpanda-frontend/build-and-push.yml"
   when: '"digitalpanda-frontend" in required_containers'
 
 - include: "digitalpanda-backend/build-and-push.yml"
   when: '"digitalpanda-backend" in required_containers'
 
+#TODO: docker build fails
 - include: "cassandra/build-and-push.yml"
   when: '"cassandra" in required_containers'
 
