@@ -8,6 +8,7 @@
   when: clear_state
 
 - name: "Create digitalpanda-backend directories on host"
+  become: true
   file:
     path: "{{item}}"
     state: directory

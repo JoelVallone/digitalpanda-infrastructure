@@ -15,6 +15,9 @@ ENV DATA_DIR ${BASE_DIR}/data
 ENV DATA_DIR_SSTABLES ${DATA_DIR}/datafile
 ENV DATA_DIR_COMMITLOG ${DATA_DIR}/commitlog
 ENV DATA_DIR_CDC ${DATA_DIR}/cdc
+ENV DATA_DIR_SAVED_CACHES ${DATA_DIR}/saved_caches
+ENV DATA_DIR_HINTS ${DATA_DIR}/hints
+
 
 ENV CASSANDRA_AUTO_START false
 
@@ -35,6 +38,8 @@ WORKDIR ${BASE_DIR}
 RUN mkdir -p ${DATA_DIR_SSTABLES} && \
     mkdir -p ${DATA_DIR_COMMITLOG} && \
     mkdir -p ${DATA_DIR_CDC} && \
+    mkdir -p ${DATA_DIR_SAVED_CACHES} && \
+    mkdir -p ${DATA_DIR_HINTS} && \
     mkdir -p ${LOG_DIR}
 
 # Load default settings

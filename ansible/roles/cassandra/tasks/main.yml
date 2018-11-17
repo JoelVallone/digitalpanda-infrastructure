@@ -19,6 +19,7 @@
   with_dict: "{{cassandra.host.exposed_folders}}"
 
 - name: "Add cassandra configuration files on host"
+  become: true
   template:
     src: "{{item}}.j2"
     dest: "{{cassandra.host.exposed_folders.conf}}/{{item}}"
@@ -27,13 +28,12 @@
     - logback.xml
   when: clear_state
 
-
 - name: "Pull image 'cassandra' and (re)start container with name 'cassandra'"
   become: yes
   docker_container:
     name: "cassandra"
     state: started
-    restart: yes
+    restart: "{% if clear_state %}yes{% else %}no{% endif %}"
     image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/cassandra:latest"
     volumes:
       - "{{cassandra.host.exposed_folders.log}}:{{cassandra.container.exposed_folders.log}}"
@@ -41,6 +41,8 @@
       - "{{cassandra.host.exposed_folders.data_sstables}}:{{cassandra.container.exposed_folders.data_sstables}}"
       - "{{cassandra.host.exposed_folders.data_commitlog}}:{{cassandra.container.exposed_folders.data_commitlog}}"
       - "{{cassandra.host.exposed_folders.data_cdc}}:{{cassandra.container.exposed_folders.data_cdc}}"
+      - "{{cassandra.host.exposed_folders.data_saved_caches}}:{{cassandra.container.exposed_folders.data_saved_caches}}"
+      - "{{cassandra.host.exposed_folders.data_hints}}:{{cassandra.container.exposed_folders.data_hints}}"
     network_mode: host
     env:
       CONTAINER_AUTO_START: true

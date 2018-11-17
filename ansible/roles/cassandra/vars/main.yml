@@ -8,6 +8,8 @@ cassandra :
       data_sstables: "/home/{{cluster_config_user}}/cassandra/datafile"
       data_commitlog: "/home/{{cluster_config_user}}/cassandra/commitlog"
       data_cdc: "/home/{{cluster_config_user}}/cassandra/cdc"
+      data_saved_caches: "/home/{{cluster_config_user}}/cassandra/saved_caches"
+      data_hints: "/home/{{cluster_config_user}}/cassandra/hints"
 
   container:
     base_folder: "/opt/cassandra"
@@ -17,3 +19,5 @@ cassandra :
       data_sstables: "/opt/cassandra/datafile"
       data_commitlog: "/opt/cassandra/commitlog"
       data_cdc: "/opt/cassandra/cdc"
+      data_saved_caches: "/opt/cassandra/saved_caches"
+      data_hints: "/opt/cassandra/hints"
