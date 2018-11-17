@@ -4,31 +4,28 @@ function log {
     echo "$(date) - $1"
 }
 
-function startForegroundCassandra {
+function startBackgroundCassandra {
     CASSANDRA_CONF=file:///${CONF_DIR}
     export CASSANDRA_CONF
 
     JVM_OPTS="-Dcassandra.logdir=${LOG_DIR} -Dlogback.configurationFile=${CONF_DIR}/logback.xml"
     export JVM_OPTS
     log "start cassandra in single-node mode"
-    ${APP_DIR}/bin/cassandra -f -R -p ${CONF_DIR}/cassandra.pid &> /dev/null
+    ${APP_DIR}/bin/cassandra -R -p ${CONF_DIR}/cassandra.pid &> /dev/null
+    echo "cassandra pid:" $(cat  ${CONF_DIR}/cassandra.pid)
 }
 
 function stopCassandra {
-    kill $(cat ${CASSANDRA_CONF_DIR}/cassandra.pid)
+    pkill -f *cassandra*
     sleep 5
     log "cassandra stop"
 }
 
-if [ "${CONTAINER_AUTO_START:-false}" = "true" ]; then
+if [ "${CONTAINER_AUTO_START:-false}" = "True" ]; then
     trap stopCassandra SIGTERM
     trap stopCassandra SIGINT
-    startForegroundCassandra
-    stopCassandra
+    startBackgroundCassandra
 else
     log "cassandra container started"
-    tail -f /dev/null
 fi
-
-log "end of entrypoint.sh"
-
+tail -f /dev/null

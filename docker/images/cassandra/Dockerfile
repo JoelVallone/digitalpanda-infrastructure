@@ -7,7 +7,7 @@ ENV JAVA_HEAP_SIZE 2048
 ENV CASSANDRA_VERSION 3.11.3
 
 ENV BASE_DIR /opt/cassandra
-ENV APP_DIRs ${BASE_DIR}/apache-cassandra-${CASSANDRA_VERSION}
+ENV APP_DIR ${BASE_DIR}/apache-cassandra-${CASSANDRA_VERSION}
 ENV CONF_DIR ${BASE_DIR}/conf
 ENV LOG_DIR ${BASE_DIR}/logs
 
@@ -26,7 +26,7 @@ RUN apt-get update && \
 # Install cassandra ${CASSANDRA_VERSION}
 RUN mkdir -p ${BASE_DIR} && \
     cd ${BASE_DIR} && \
-    wget http://mirror.switch.ch/mirror/apache/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz && \
+    wget mirror.easyname.ch/apache/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz && \
     tar -zxf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz && \
     rm apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz;
 
@@ -38,7 +38,7 @@ RUN mkdir -p ${DATA_DIR_SSTABLES} && \
     mkdir -p ${LOG_DIR}
 
 # Load default settings
-COPY entrypoint.sh ${BASE_DIR}/entrypoint.sh
+COPY entrypoint.sh /opt/entrypoint.sh
 COPY default-config ${CONF_DIR}
 
 ENTRYPOINT /opt/entrypoint.sh

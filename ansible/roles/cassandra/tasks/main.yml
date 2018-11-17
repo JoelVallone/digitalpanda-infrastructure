@@ -40,5 +40,7 @@
       - "{{cassandra.host.exposed_folders.data_commitlog}}:{{cassandra.container.exposed_folders.data_commitlog}}"
       - "{{cassandra.host.exposed_folders.data_cdc}}:{{cassandra.container.exposed_folders.data_cdc}}"
     network_mode: host
+    env:
+      CONTAINER_AUTO_START: true
     restart_policy: always
     tty: yes

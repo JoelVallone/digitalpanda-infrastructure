@@ -6,6 +6,7 @@
         required_containers: ['cassandra', 'digitalpanda-backend', 'digitalpanda-frontend'] ,
         when: build_code}
 
+#TODO: cassandra should have dedicated user (panda-worker ?)
 - hosts: cassandra-nodes
   roles:
    - cassandra
