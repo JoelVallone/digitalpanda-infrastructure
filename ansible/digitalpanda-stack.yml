@@ -11,9 +11,9 @@
   roles:
    - cassandra
 
-  #- hosts: backends
-  #roles:
-  #  - digitalpanda-backend
+- hosts: backends
+  roles:
+    - digitalpanda-backend
 
   #- hosts: frontends
   #roles:

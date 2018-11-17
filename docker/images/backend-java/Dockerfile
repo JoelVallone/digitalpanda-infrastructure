@@ -20,8 +20,8 @@ RUN mkdir -p ${BIN_DIR} && \
 WORKDIR ${BASE_DIR}
 
 COPY *backend*.jar ${BIN_DIR}/backend.jar
-COPY entrypoint.sh ${BIN_DIR}/entrypoint.sh
+COPY entrypoint.sh /opt/entrypoint.sh
 
 EXPOSE 8080
 
-ENTRYPOINT ${BIN_DIR}/entrypoint.sh
+ENTRYPOINT /opt/entrypoint.sh

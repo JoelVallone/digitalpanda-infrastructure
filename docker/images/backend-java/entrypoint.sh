@@ -1,8 +1,9 @@
 #!/bin/bash
 
-echo "starting jar file"
+echo "Starting jar file"
 java -version
-java -jar ${BACKEND_BIN_DIR}/backend.jar &> ${BACKEND_LOG_DIR}/digitalpanda-backend.log
+java -jar ${BIN_DIR}/backend.jar &> ${LOG_DIR}/digitalpanda-backend.log
+echo "End of entrypoint file"
 
 
 

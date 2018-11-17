@@ -1,12 +1,14 @@
 ---
 
 - name: "Remove cassandra root directory on host"
+  become: true
   file:
     path: "{{cassandra.host.base_folder}}"
     state: absent
   when: clear_state
 
 - name: "Create cassandra directories on host"
+  become: true
   file:
     path: "{{item.value}}"
     state: directory

@@ -28,6 +28,6 @@ RUN mkdir -p ${BIN_DIR} && \
 WORKDIR ${BASE_DIR}
 
 COPY digitalpanda-frontend ${BIN_DIR}/digitalpanda-frontend
-COPY entrypoint.sh ${BIN_DIR}/entrypoint.sh
+COPY entrypoint.sh /opt/entrypoint.sh
 
 ENTRYPOINT /opt/entrypoint.sh
