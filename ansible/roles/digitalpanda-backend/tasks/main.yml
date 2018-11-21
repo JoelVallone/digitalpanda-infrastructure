@@ -3,7 +3,6 @@
   become: true
   file:
     path: "{{backend.host.base_folder}}"
-    recurse: yes
     state: absent
   when: clear_state
 

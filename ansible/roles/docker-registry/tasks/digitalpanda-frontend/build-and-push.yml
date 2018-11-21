@@ -4,6 +4,7 @@
   git:
     repo: "{{ frontend_repo.clone_url }}"
     dest: "{{ frontend_repo.target_path }}"
+    force: yes
 
 - name: "Build frontend and copy .js into docker folder"
   shell: "cd {{ frontend_repo.target_path }} && ./scripts/build-prod.sh"
