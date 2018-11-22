@@ -23,6 +23,7 @@
   docker_container:
     name: "digitalpanda-backend"
     state: started
+    pull: true
     restart: yes
     image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-backend:latest"
     volumes:

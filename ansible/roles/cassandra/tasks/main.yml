@@ -3,7 +3,7 @@
 - name: "Remove cassandra root directory on host"
   become: true
   file:
-    path: "{{cassandra.host.base_folder}}"
+    path: "{{docker.host.base_folder}}"
     state: absent
   when: clear_state
 
@@ -16,13 +16,13 @@
     owner: "{{cluster_config_user}}"
     group: "{{cluster_config_user}}"
     mode: 0775
-  with_dict: "{{cassandra.host.exposed_folders}}"
+  with_dict: "{{docker.host.exposed_folders}}"
 
 - name: "Add cassandra configuration files on host"
   become: true
   template:
     src: "{{item}}.j2"
-    dest: "{{cassandra.host.exposed_folders.conf}}/{{item}}"
+    dest: "{{docker.host.exposed_folders.conf}}/{{item}}"
   with_items:
     - cassandra.yaml
     - logback.xml
@@ -32,17 +32,18 @@
   become: yes
   docker_container:
     name: "cassandra"
+    pull: true
     state: started
     restart: "{% if clear_state %}yes{% else %}no{% endif %}"
     image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/cassandra:latest"
     volumes:
-      - "{{cassandra.host.exposed_folders.log}}:{{cassandra.container.exposed_folders.log}}"
-      - "{{cassandra.host.exposed_folders.conf}}:{{cassandra.container.exposed_folders.conf}}"
-      - "{{cassandra.host.exposed_folders.data_sstables}}:{{cassandra.container.exposed_folders.data_sstables}}"
-      - "{{cassandra.host.exposed_folders.data_commitlog}}:{{cassandra.container.exposed_folders.data_commitlog}}"
-      - "{{cassandra.host.exposed_folders.data_cdc}}:{{cassandra.container.exposed_folders.data_cdc}}"
-      - "{{cassandra.host.exposed_folders.data_saved_caches}}:{{cassandra.container.exposed_folders.data_saved_caches}}"
-      - "{{cassandra.host.exposed_folders.data_hints}}:{{cassandra.container.exposed_folders.data_hints}}"
+      - "{{docker.host.exposed_folders.log}}:{{docker.container.exposed_folders.log}}"
+      - "{{docker.host.exposed_folders.conf}}:{{docker.container.exposed_folders.conf}}"
+      - "{{docker.host.exposed_folders.data_sstables}}:{{docker.container.exposed_folders.data_sstables}}"
+      - "{{docker.host.exposed_folders.data_commitlog}}:{{docker.container.exposed_folders.data_commitlog}}"
+      - "{{docker.host.exposed_folders.data_cdc}}:{{docker.container.exposed_folders.data_cdc}}"
+      - "{{docker.host.exposed_folders.data_saved_caches}}:{{docker.container.exposed_folders.data_saved_caches}}"
+      - "{{docker.host.exposed_folders.data_hints}}:{{docker.container.exposed_folders.data_hints}}"
     network_mode: host
     env:
       CONTAINER_AUTO_START: true

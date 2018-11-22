@@ -1,16 +1,15 @@
 ---
-cassandra :
+docker:
   host:
-    base_folder: "/home/{{cluster_config_user}}/cassandra"
+    base_folder: "{{cassandra.base_folder}}"
     exposed_folders :
-      log: "/home/{{cluster_config_user}}/cassandra/log"
-      conf: "/home/{{cluster_config_user}}/cassandra/conf"
-      data_sstables: "/home/{{cluster_config_user}}/cassandra/datafile"
-      data_commitlog: "/home/{{cluster_config_user}}/cassandra/commitlog"
-      data_cdc: "/home/{{cluster_config_user}}/cassandra/cdc"
-      data_saved_caches: "/home/{{cluster_config_user}}/cassandra/saved_caches"
-      data_hints: "/home/{{cluster_config_user}}/cassandra/hints"
-
+      log: "{{cassandra.base_folder}}/log"
+      conf: "{{cassandra.base_folder}}/conf"
+      data_sstables: "{{cassandra.base_folder}}/datafile"
+      data_commitlog: "{{cassandra.base_folder}}/commitlog"
+      data_cdc: "{{cassandra.base_folder}}/cdc"
+      data_saved_caches: "{{cassandra.base_folder}}/saved_caches"
+      data_hints: "{{cassandra.base_folder}}/hints"
   container:
     base_folder: "/opt/cassandra"
     exposed_folders:

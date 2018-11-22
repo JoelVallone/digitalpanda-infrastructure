@@ -3,23 +3,21 @@ localnode ansible_host=127.0.0.1 ansible_user=jva
 fanless1.digitalpanda.org ansible_host=192.168.0.102
 
 [x64-build-node]
-localnode
-#fanless1.digitalpanda.org
+fanless1.digitalpanda.org
 
 [docker-registry]
-localnode
-#fanless1.digitalpanda.org
+fanless1.digitalpanda.org
 
 [frontends]
-localnode
-#fanless1.digitalpanda.org
+fanless1.digitalpanda.org
 
 [backends]
-localnode
-#fanless1.digitalpanda.org
+fanless1.digitalpanda.org
 
 [cassandra-nodes]
-localnode
-#fanless1.digitalpanda.org
+fanless1.digitalpanda.org
+
+[cassandra-test-data-injector]
+fanless1.digitalpanda.org
 
 

@@ -1,0 +1,10 @@
+{% for measure in test_data.measures %}
+INSERT INTO iot.sensor_measure_history_seconds
+    (location, time_block_period_seconds, time_block_id, measure_type, bucket, timestamp)
+    VALUES
+    ( '{{measure.location}}', {{(measure.timestamp / test_data.time_block_period_seconds) | round }}, '{{measure.type}}', {{test_data.bucket}}, {{measure.timestamp}});
+INSERT INTO iot.sensor_measure_latest
+    (location, measuretype, measurevalue, timestamp)
+    VALUES
+    ( '{{measure.location}}', '{{measure.type}}', {{measure.value}}, {{measure.timestamp}});
+{% endfor %}

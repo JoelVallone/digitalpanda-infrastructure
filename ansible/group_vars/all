@@ -24,3 +24,9 @@ docker_registry :
 docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"
 
 build_code: false
+
+cassandra:
+    version: "3.11.3"
+    base_folder: "/home/{{cluster_config_user}}/cassandra"
+
+inject_test_data: false
