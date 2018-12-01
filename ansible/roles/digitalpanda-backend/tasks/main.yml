@@ -31,5 +31,6 @@
     ports:
       - "8080:8080"
     network_mode: host
-    restart_policy: always
+    restart_policy: on-failure
+    restart_retries: 3
     tty: yes

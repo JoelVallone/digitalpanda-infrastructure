@@ -12,6 +12,7 @@
   become: yes
   docker_image:
     path: "{{ docker_images }}/backend-java"
-    name: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-backend"
-    tag: latest
+    name: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-backend:latest"
+    state: present
     push: yes
+    force: yes

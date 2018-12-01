@@ -1,4 +1,4 @@
-ansible-playbook digitalpanda-stack.yml --inventory-file=digitalpanda-inventory-local --extra-vars "build_code=true clear_state=true inject_test_data=true" --tags "wip"
+ansible-playbook digitalpanda-stack.yml -vv --inventory-file=digitalpanda-inventory-local --extra-vars "build_code=true clear_state=true inject_test_data=true" --tags "wip"
 ansible-playbook some-playbook.yml --inventory-file=cluster-inventory
 
 --syntax-check

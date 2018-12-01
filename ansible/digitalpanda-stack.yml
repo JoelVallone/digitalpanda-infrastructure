@@ -1,11 +1,13 @@
 ---
-#TODO: 0) fix backend container update; 1) fix frontend build and deploy ; 2) container processes should have dedicated users
+#TODO:1) fix frontend build and deploy ; 2) container processes should have dedicated users
 
 - hosts: x64-build-node
   roles:
     - { role: docker-registry,
-        required_containers: ['cassandra', 'digitalpanda-backend'] ,
+        required_containers: ['digitalpanda-backend'] ,
         when: build_code}
+  tags:
+    - wip
 
 - hosts: cassandra-nodes
   roles:
@@ -14,12 +16,13 @@
 - hosts: backends
   roles:
     - digitalpanda-backend
+  tags:
+    - wip
 
 - hosts: cassandra-test-data-injector
   roles:
     - test-data-injector
-  tags:
-    - wip
+
 
   #- hosts: frontends
   #roles:
