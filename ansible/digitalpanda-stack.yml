@@ -4,10 +4,8 @@
 - hosts: x64-build-node
   roles:
     - { role: docker-registry,
-        required_containers: ['digitalpanda-backend'] ,
+        required_containers: ['cassandra', 'digitalpanda-backend'] ,
         when: build_code}
-  tags:
-    - wip
 
 - hosts: cassandra-nodes
   roles:
@@ -16,13 +14,10 @@
 - hosts: backends
   roles:
     - digitalpanda-backend
-  tags:
-    - wip
 
 - hosts: cassandra-test-data-injector
   roles:
     - test-data-injector
-
 
   #- hosts: frontends
   #roles:
