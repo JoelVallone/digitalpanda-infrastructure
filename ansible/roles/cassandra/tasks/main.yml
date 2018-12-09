@@ -49,3 +49,6 @@
       CONTAINER_AUTO_START: true
     restart_policy: always
     tty: yes
+
+- pause:
+    seconds: 5
