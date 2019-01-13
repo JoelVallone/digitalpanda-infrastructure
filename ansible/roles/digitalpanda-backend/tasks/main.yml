@@ -30,7 +30,9 @@
       - "{{backend.host.exposed_folders.log}}:{{backend.container.exposed_folders.log}}"
     ports:
       - "8080:8080"
-    network_mode: host
+    network_mode: bridge
+    networks:
+      - name: digitalpanda
     restart_policy: on-failure
     restart_retries: 3
     tty: yes

@@ -31,7 +31,7 @@
 - name: "Pull image 'cassandra' and (re)start container with name 'cassandra'"
   become: yes
   docker_container:
-    name: "cassandra"
+    name: "cassandra-node-0"
     pull: true
     state: started
     restart: "{% if clear_state %}yes{% else %}no{% endif %}"

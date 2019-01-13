@@ -1,22 +1,4 @@
 ---
-- name: "Remove digitalpanda-frontend root directory on host"
-  become: true
-  file:
-    path: "{{frontend.host.base_folder}}"
-    state: absent
-  when: clear_state
-
-- name: "Create digitalpanda-frontend directories on host"
-  file:
-    path: "{{item}}"
-    state: directory
-    recurse: yes
-    owner: "{{cluster_config_user}}"
-    group: "{{cluster_config_user}}"
-    mode: 0775
-  with_dict: "{{frontend.host.exposed_folders}}"
-
-
 - name: "Pull image 'digitalpanda-frontend' and (re)start container with name 'digitalpanda-frontend'"
   become: yes
   docker_container:
@@ -25,12 +7,10 @@
     pull: true
     restart: yes
     image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-frontend:latest"
-    volumes:
-      - "{{frontend.host.exposed_folders.log}}:{{frontend.container.exposed_folders.log}}"
     ports:
       - "8000:8000"
-    env:
-      - NODE_DEV: development
-    network_mode: host
+    network_mode: bridge
+    networks:
+    - name: digitalpanda
     restart_policy: always
     tty: yes
