@@ -5,11 +5,12 @@ docker:
     exposed_folders :
       log: "{{cassandra.base_folder}}/log"
       conf: "{{cassandra.base_folder}}/conf"
-      data_sstables: "{{cassandra.base_folder}}/datafile"
-      data_commitlog: "{{cassandra.base_folder}}/commitlog"
-      data_cdc: "{{cassandra.base_folder}}/cdc"
-      data_saved_caches: "{{cassandra.base_folder}}/saved_caches"
-      data_hints: "{{cassandra.base_folder}}/hints"
+      data: "{{cassandra.base_folder}}/data"
+      data_sstables: "{{cassandra.base_folder}}/data/datafile"
+      data_commitlog: "{{cassandra.base_folder}}/data/commitlog"
+      data_cdc: "{{cassandra.base_folder}}/data/cdc"
+      data_saved_caches: "{{cassandra.base_folder}}/data/saved_caches"
+      data_hints: "{{cassandra.base_folder}}/data/hints"
   container:
     base_folder: "/opt/cassandra"
     exposed_folders:

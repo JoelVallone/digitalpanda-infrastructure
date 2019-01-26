@@ -28,10 +28,11 @@
     - logback.xml
   when: clear_state
 
-- name: "Pull image 'cassandra' and (re)start container with name 'cassandra'"
+- name: "Pull image 'cassandra' and (re)start container with name 'cassandra-node-0'"
   become: yes
   docker_container:
     name: "cassandra-node-0"
+    hostname: "cassandra-node-0"
     pull: true
     state: started
     restart: "{% if clear_state %}yes{% else %}no{% endif %}"
@@ -39,12 +40,17 @@
     volumes:
       - "{{docker.host.exposed_folders.log}}:{{docker.container.exposed_folders.log}}"
       - "{{docker.host.exposed_folders.conf}}:{{docker.container.exposed_folders.conf}}"
-      - "{{docker.host.exposed_folders.data_sstables}}:{{docker.container.exposed_folders.data_sstables}}"
-      - "{{docker.host.exposed_folders.data_commitlog}}:{{docker.container.exposed_folders.data_commitlog}}"
-      - "{{docker.host.exposed_folders.data_cdc}}:{{docker.container.exposed_folders.data_cdc}}"
-      - "{{docker.host.exposed_folders.data_saved_caches}}:{{docker.container.exposed_folders.data_saved_caches}}"
-      - "{{docker.host.exposed_folders.data_hints}}:{{docker.container.exposed_folders.data_hints}}"
-    network_mode: host
+      - "{{docker.host.exposed_folders.data}}:{{docker.container.exposed_folders.data}}"
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "7199:7199"
+      - "9042:9042"
+      - "9160:9160"
+      - "9142:9142"
+    network_mode: bridge
+    networks:
+    - name: digitalpanda
     env:
       CONTAINER_AUTO_START: true
     restart_policy: always

@@ -23,7 +23,7 @@ ENV CASSANDRA_AUTO_START false
 
 # Install java 8
 RUN apt-get update && \
-    apt-get install -y openjdk-8-jdk wget && \
+    apt-get install -y openjdk-8-jdk python net-tools dnsutils wget && \
     rm -rf /var/lib/apt/lists/*
 
 # Install cassandra ${CASSANDRA_VERSION}
