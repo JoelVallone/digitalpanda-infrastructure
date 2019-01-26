@@ -8,3 +8,4 @@
     state: present
     push: yes
     force: yes
+    debug: yes

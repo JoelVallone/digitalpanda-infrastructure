@@ -6,9 +6,9 @@
     state: started
     pull: true
     restart: yes
-    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-frontend:latest"
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-frontend:{{ digitalpanda_frontend_version }}"
     ports:
-      - "8000:8000"
+      - "8001:8000"
     network_mode: bridge
     networks:
     - name: digitalpanda

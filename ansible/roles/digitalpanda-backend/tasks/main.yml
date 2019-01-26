@@ -25,11 +25,11 @@
     state: started
     pull: true
     restart: yes
-    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-backend:latest"
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-backend:{{ digitalpanda_backend_version }}"
     volumes:
       - "{{backend.host.exposed_folders.log}}:{{backend.container.exposed_folders.log}}"
     ports:
-      - "8080:8080"
+      - "8081:8081"
     network_mode: bridge
     networks:
       - name: digitalpanda
