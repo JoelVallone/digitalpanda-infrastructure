@@ -17,9 +17,9 @@ frontend_repo:
 
 dns_server_ip : 192.168.1.1
 docker_registry : 
-  ip: 127.0.0.1
+  ip: 192.168.0.102
   port: 5000
-  fqdn: localhost
+  fqdn: fanless1.digitalpanda.org
 
 docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"
 
