@@ -7,14 +7,14 @@ SCRIPT_NAME=$0
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 INITIAL_FOLDER=$(pwd)
 echo "Build software"
-cd ${SCRIPT_FOLDER}/../../digitalpanda-iot/
+cd ${SCRIPT_FOLDER}/../../../digitalpanda-iot/
 mvn clean install
-cd ${SCRIPT_FOLDER}/../../digitalpanda-backend/
+cd ${SCRIPT_FOLDER}/../../../digitalpanda-backend/
 ./scripts/build.sh
-cd ${SCRIPT_FOLDER}/../../digitalpanda-frontend/
+cd ${SCRIPT_FOLDER}/../../../digitalpanda-frontend-/
 ./scripts/build-prod.sh
 echo "Build containers"
-cd ${SCRIPT_FOLDER}/../../digitalpanda-infrastructure/docker/compose/
+cd ${SCRIPT_FOLDER}/../../../digitalpanda-infrastructure/docker/compose/
 #sudo ${SCRIPT_FOLDER}/docker/scripts/push.sh backend-java frontend-angular
 sudo docker-compose -f compose.yml build
 echo "Restart containers"
