@@ -34,5 +34,5 @@
     networks:
       - name: digitalpanda
     restart_policy: on-failure
-    restart_retries: 3
+    restart_retries: 50
     tty: yes
