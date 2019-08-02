@@ -21,7 +21,7 @@ sudo docker pull 192.168.1.1:5000/hadoop-arm
 # setup client
 sudo cat >> /etc/docker/daemon.json
 {
-    "dns": ["{{ dns_server_ip }}","8.8.8.8", "8.8.4.4"],
+    "dns": ["{{ dns_server_ip }}","{{ external_dns_server_ip }}", "8.8.4.4"],
     "insecure-registries" : ["{{ docker_registry_ip }}:5000"]
 }
 also see /etc/default/docker or /ets/systemd/system/docker.service.d/

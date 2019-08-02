@@ -31,7 +31,7 @@ pi3-3.lab.digitalpanda.org
 pi3-4.lab.digitalpanda.org
 
 [new-worker-nodes]
-#pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
-#pi3-2.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
-#pi3-3.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
-#pi3-4.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
+pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot node_id=1
+pi3-2.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot node_id=2
+pi3-3.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot node_id=3
+pi3-4.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot node_id=4

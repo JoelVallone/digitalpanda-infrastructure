@@ -22,41 +22,23 @@
     key: '{{ item }}'
   with_lines: cat '{{ role_path }}/files/authorized_keys'
 
-- name: Copy static host name resolution file
+- name: "Set domain name {{ cluster_config_domain_name }} present"
   become: yes
-  template:
-    src: ./templates/network/hosts.j2
-    dest: /etc/hosts
-    owner: root
-    mode: "u=rw,g=r,o=r"
-
-- name: Copy ip configuration file
-  become: yes
-  template:
-    src: ./templates/network/eth0.j2
-    dest: /etc/network/interfaces.d/eth0
-    owner: root
-    mode: "u=rw,g=r,o=r"
-  when: static_ip
-
-- name: "Enable dns server update"
-  become: yes
-  shell: chattr -i /etc/resolv.conf
-  when: internal_dns
+  replace:
+    dest=/etc/hosts
+    regexp='^(127\.0\.0\.1)+.*({{ansible_hostname}}).*$'
+    replace='\1 {{ ansible_hostname }}.{{ cluster_config_domain_name }} {{ansible_hostname}}'
 
 - name: "Set internal DNS server ip"
   become: yes
-  template:
-    src: ./templates/network/resolv.conf.j2
-    dest: /etc/resolv.conf
-    owner: root
-    mode: "u=rw,g=r,o=r"
-  when: internal_dns
+  lineinfile:
+    dest=/etc/resolv.conf
+    insertbefore=BOF
+    line="nameserver {{ dns_server_ip }}"
     
 - name: "Disable dns server update"
   become: yes
   shell: chattr +i /etc/resolv.conf
-  when: internal_dns
     
 - name: "copy custom Docker configuration"
   become: yes

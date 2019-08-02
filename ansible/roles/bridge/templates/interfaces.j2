@@ -9,7 +9,7 @@ iface lo inet loopback
 auto {{ ext_interface | mandatory }}
 iface {{ ext_interface | mandatory }} inet static
   address 192.168.0.102
-  gateway 192.168.0.1
+  gateway {{ home_gateway }}
   netmask 255.255.255.0
   network 192.168.0.0
   broadcast 192.168.0.255
@@ -17,7 +17,7 @@ iface {{ ext_interface | mandatory }} inet static
 # The secondary interface connected to cluster newtork
 auto {{ int_interface | mandatory }}
 iface {{ int_interface | mandatory }} inet static
-  address 192.168.1.1
+  address {{ int_ip_bridge }}
   netmask 255.255.255.0
   network 192.168.1.0
   broadcast 192.168.1.255

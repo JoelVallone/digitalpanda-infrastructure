@@ -15,12 +15,21 @@ frontend_repo:
   target_path: "/home/{{ansible_ssh_user}}/digitalpanda/digitalpanda-frontend-"
   clone_url: "https://github.com/JoelVallone/digitalpanda-frontend-.git"
 
+home_gateway: 192.168.0.1
+
 dns_server_ip : 192.168.1.1
+external_dns_server_ip : 8.8.8.8
+int_ip_bridge : 192.168.1.1
+cluster_master: fanless1
+cluster_domain : lab.digitalpanda.org
+cluster_size : 4
+
+gateway_domain: digitalpanda.org
+gateway_host: fanless1
 docker_registry : 
   ip: 192.168.0.102
   port: 5000
-  fqdn: fanless1.digitalpanda.org
-
+  fqdn: "{{ gateway_host }}.{{ gateway_domain }}"
 docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"
 
 build_code: false
