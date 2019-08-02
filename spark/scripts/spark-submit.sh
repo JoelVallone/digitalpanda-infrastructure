@@ -1,15 +1,15 @@
 #!/bin/bash
 SCRIPT_FOLDER="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
 ROOT_FOLDER="${SCRIPT_FOLDER}/.."
-SPARK_VERSION=spark-2.3.0
-SPARK_NAME=$SPARK_VERSION-bin-hadoop2.7
+SPARK_VERSION=spark-2.3.3
+SPARK_NAME=${SPARK_VERSION}-bin-hadoop2.7
 SPARK_FOLDER=${ROOT_FOLDER}/${SPARK_NAME}
 HADOOP_CLIENT_CONFIG_FOLDER=${ROOT_FOLDER}/config/client-config
 
 if [ ! -d "../${SPARK_NAME}" ]; then
     echo "DOWNLOAD SPARK : ${SPARK_NAME}"
     cd ${ROOT_FOLDER}
-    wget http://mirror.switch.ch/mirror/apache/dist/spark/${SPARK_VERSION}/${SPARK_NAME}.tgz
+    wget https://www-eu.apache.org/dist/spark/${SPARK_VERSION}/${SPARK_NAME}.tgz
     tar -zxf ${SPARK_NAME}.tgz
     rm ${SPARK_NAME}.tgz
     cd ${SCRIPT_FOLDER}
