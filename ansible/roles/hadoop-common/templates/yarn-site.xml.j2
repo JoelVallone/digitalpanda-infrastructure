@@ -23,18 +23,22 @@
   </property>
   <property>
     <name>yarn.nodemanager.hostname</name>
-    <value>{% if 'hadoop-master-node' in group_names %}0.0.0.0{% else %}{{ansible_default_ipv4.address}}{% endif %}</value>
+    <value>{% if 'hadoop-master-node' in group_names %}0.0.0.0{% else %}{{cluster_node.host_fqdn}}{% endif %}</value>
   </property>
   <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
     <value>false</value>
   </property>
   <property>
+    <name>yarn.nodemanager.bind-host</name>
+    <value>0.0.0.0</value>
+  </property>
+  <property>
     <name>yarn.nodemanager.local-dirs</name>
     <value>{{hadoop.container.exposed_folder.data_slave}}</value>
   </property>
   <property>
-    <name>yarn.nodemanager.logs-dirs</name>
+    <name>yarn.nodemanager.log-dirs</name>
     <value>{{hadoop.container.exposed_folder.log}}</value>
   </property>
   <property>

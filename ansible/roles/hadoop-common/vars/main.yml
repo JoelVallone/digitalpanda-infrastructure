@@ -25,3 +25,7 @@ hadoop :
   yarn:
     ressourcemanager:
      host_fqdn: "{{groups['hadoop-master-node'][0]}}"
+
+cluster_node:
+  host_fqdn: "pi3-{{ node_id  }}.{{ cluster_domain }}"
+  ip: "192.168.1.10{{ node_id }}"

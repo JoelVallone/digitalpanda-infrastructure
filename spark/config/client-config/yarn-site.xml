@@ -22,10 +22,6 @@
     <value>fanless1.digitalpanda.org</value>
   </property>
   <property>
-    <name>yarn.nodemanager.hostname</name>
-    <value>pi3-2.lab.digitalpanda.org</value>
-  </property>
-  <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
     <value>false</value>
   </property>

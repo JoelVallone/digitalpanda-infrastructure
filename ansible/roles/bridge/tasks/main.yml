@@ -9,6 +9,33 @@
     owner: root
     mode: "u=rw,g=r,o=r"
 
+- name: Copy static host name resolution file
+  become: yes
+  template:
+    src: ./templates/hosts.j2
+    dest: /etc/hosts
+    owner: root
+    mode: "u=rw,g=r,o=r"
+
+- name: "Enable dns server update"
+  become: yes
+  shell: chattr -i /etc/resolv.conf
+  when: internal_dns
+
+- name: "Set internal DNS server ip"
+  become: yes
+  template:
+    src: ./templates/resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    mode: "u=rw,g=r,o=r"
+  when: internal_dns
+
+- name: "Disable dns server update"
+  become: yes
+  shell: chattr +i /etc/resolv.conf
+  when: internal_dns
+
 - name: Copy iptables script for bridging
   become: yes
   template:

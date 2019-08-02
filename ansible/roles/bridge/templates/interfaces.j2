@@ -14,7 +14,7 @@ iface {{ ext_interface | mandatory }} inet static
   network 192.168.0.0
   broadcast 192.168.0.255
   dns-nameservers 8.8.8.8 8.8.4.4
-# The secondary interface connected to cluster newtork
+# The secondary interface connected to cluster network
 auto {{ int_interface | mandatory }}
 iface {{ int_interface | mandatory }} inet static
   address {{ int_ip_bridge }}
