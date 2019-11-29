@@ -1,0 +1,20 @@
+---
+- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-schema-registry-{{ node_id }}'"
+  become: yes
+  docker_container:
+    name: "cp-schema-registry"
+    hostname: "cp-schema-registry"
+    state: started
+    pull: true
+    restart: yes
+    image: "{{ docker_image }}"
+    ports:
+      - "18081:18081"
+    network_mode: host
+    env:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "{% for zkp-node in groups['zookeeper-nodes'] %}{{ zkp-node }}:2181,{% endfor %}"
+      SCHEMA_REGISTRY_HOST_NAME: "{{ inventory_hostname }}"
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:18081"
+      SCHEMA_REGISTRY_DEBUG: "true"
+    restart_policy: always
+    tty: yes

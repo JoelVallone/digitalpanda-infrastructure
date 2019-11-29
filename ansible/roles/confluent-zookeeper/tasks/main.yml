@@ -1,0 +1,47 @@
+---
+- name: "Remove cp-zookeeper root directory on host"
+  become: true
+  file:
+    path: "{{item}}"
+    state: absent
+  with_dict: "{{host_folders}}"
+  when: clear_state
+
+- name: "Create cp-zookeeper directories on host"
+  become: true
+  file:
+    path: "{{item}}"
+    state: directory
+    recurse: yes
+    owner: "{{cluster_config_user}}"
+    group: "{{cluster_config_user}}"
+    mode: 0775
+  with_dict: "{{host_folders}}"
+
+
+- name: "Pull image {{docker_image}} and (re)start container with name 'cp-zookeeper-{{node_id}}'"
+  become: yes
+  docker_container:
+    name: "cp-zookeeper-{{node_id}}"
+    hostname: "cp-zookeeper-{{node_id}}"
+    state: started
+    pull: true
+    restart: yes
+    image: "{{docker_image}}"
+    volumes:
+      - "{{host_folders.log_folder}}:/var/lib/zookeeper/log"
+      - "{{host_folders.data_folder}}:/var/lib/zookeeper/data"
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    network_mode: host
+    env:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SERVER_ID: {{node_id}}
+      ZOOKEEPER_TICK_TIME: 2000 # Millis
+      ZOOKEEPER_INIT_LIMIT: 5 # Ticks
+      ZOOKEEPER_SYNC_LIMIT: 2 # Ticks
+      ZOOKEEPER_SERVERS: "{% for zkp-node in groups['zookeeper-nodes'] %}{{zkp-node}}:2888:3888;{% endfor %}"
+    restart_policy: always
+    tty: yes

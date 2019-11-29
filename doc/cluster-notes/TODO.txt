@@ -1,4 +1,25 @@
+# New
+- buy new worker nodes
+- install and configure Ubuntu 16.01 LTS on worker nodes
+- setup zookeeper
+- setup kafka-broker
+- setup schema-registry
+- transfer metrics from old cassandra to kafka topic
+- setup new-cassandra to multi-node mode
+- setup kafka-connect (cluster mode) with cassandra connector
+    - sink raw metrics to new-cassandra table
+- rewrite pi iot client to write raw measure to kafka topic
+- setup YARN & HDFS
+- try submit a hadoop map-reduce job
 - try to submit a spark job
+- try submit flink job
+- write flink jobs
+ - metric averages: 1m/1h/1d
+ - measure inventory
+- setup sinks & tables for each average job + measure inventory
+
+
+# Old
 - update pi3-1 to new hypriot OS version OR troublshoot docker registry
 - fix datanode display httpAddress to host ip instead of localhost in namenode ui
 - fix ressource and node managers logging => not to default location container-unreachable

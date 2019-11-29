@@ -10,7 +10,7 @@ pi3-4.lab.digitalpanda.org ansible_host=192.168.0.124 node_id=4
 fanless1.digitalpanda.org
 
 [bridge]
-fanless1.digitalpanda.org ext_interface=eno1 int_interface=enp2s0
+fanless1.digitalpanda.org ext_interface=eno1 int_interface=enp2s0 node_id=0
 
 [docker-registry]
 fanless1.digitalpanda.org
@@ -35,3 +35,19 @@ pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
 pi3-2.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
 pi3-3.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
 pi3-4.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
+
+[cp-zookeeper-nodes]
+fanless1.digitalpanda.org node_id=0
+worker-panda-1.lab.digitalpanda.org node_id=1
+worker-panda-2.lab.digitalpanda.org node_id=2
+
+[cp-kafka-nodes]
+worker-panda-1.lab.digitalpanda.org node_id=1
+worker-panda-2.lab.digitalpanda.org node_id=2
+
+[cp-schema-registry]
+fanless1.digitalpanda.org node_id=0
+
+[cp-connect-nodes]
+worker-panda-1.lab.digitalpanda.org node_id=1
+worker-panda-2.lab.digitalpanda.org node_id=2

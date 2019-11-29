@@ -1,0 +1,2 @@
+---
+docker_image: "confluentinc/cp-kafka-connect:{{confluent_platform_docker_version}}"

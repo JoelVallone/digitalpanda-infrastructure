@@ -38,6 +38,8 @@ cassandra:
     version: "3.11.3"
     base_folder: "/home/{{cluster_config_user}}/cassandra"
 
+confluent_platform_docker_version: 5.3.1
+
 inject_test_data: false
 
 digitalpanda_backend_version: 1.0.0
