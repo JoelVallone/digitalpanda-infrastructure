@@ -5,6 +5,8 @@ pi3-1.lab.digitalpanda.org ansible_host=192.168.0.121 node_id=1
 pi3-2.lab.digitalpanda.org ansible_host=192.168.0.122 node_id=2
 pi3-3.lab.digitalpanda.org ansible_host=192.168.0.123 node_id=3
 pi3-4.lab.digitalpanda.org ansible_host=192.168.0.124 node_id=4
+stressed-panda-1.lab.digitalpanda.org ansible_host=192.168.0.241 node_id=1
+stressed-panda-2.lab.digitalpanda.org ansible_host=192.168.0.242 node_id=2
 
 [networkservers]
 fanless1.digitalpanda.org
@@ -30,24 +32,28 @@ pi3-2.lab.digitalpanda.org
 pi3-3.lab.digitalpanda.org
 pi3-4.lab.digitalpanda.org
 
-[new-worker-nodes]
-pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
-pi3-2.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
-pi3-3.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
-pi3-4.lab.digitalpanda.org ansible_user=pirate ansible_password=hypriot
+[new-pi3-worker-nodes]
+pi3-1.lab.digitalpanda.org ansible_user=pirate ansible_password=???
+pi3-2.lab.digitalpanda.org ansible_user=pirate ansible_password=???
+pi3-3.lab.digitalpanda.org ansible_user=pirate ansible_password=???
+pi3-4.lab.digitalpanda.org ansible_user=pirate ansible_password=???
+
+[new-stressed-worker-nodes]
+stressed-panda-1.lab.digitalpanda.org ansible_ssh_user=jva
+stressed-panda-2.lab.digitalpanda.org ansible_ssh_user=jva
 
 [cp-zookeeper-nodes]
-fanless1.digitalpanda.org node_id=0
-worker-panda-1.lab.digitalpanda.org node_id=1
-worker-panda-2.lab.digitalpanda.org node_id=2
+fanless1.digitalpanda.org
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
 
 [cp-kafka-nodes]
-worker-panda-1.lab.digitalpanda.org node_id=1
-worker-panda-2.lab.digitalpanda.org node_id=2
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
 
 [cp-schema-registry]
-fanless1.digitalpanda.org node_id=0
+fanless1.digitalpanda.org
 
 [cp-connect-nodes]
-worker-panda-1.lab.digitalpanda.org node_id=1
-worker-panda-2.lab.digitalpanda.org node_id=2
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
