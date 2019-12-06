@@ -1,6 +1,6 @@
 ---
 ## Setup and register a new cluster node for digitalpanda
 - hosts:
-    - new-stressed-worker-nodes
+    - cluster_stressed_worker_nodes
   roles: 
     - cluster-node-base-nuc

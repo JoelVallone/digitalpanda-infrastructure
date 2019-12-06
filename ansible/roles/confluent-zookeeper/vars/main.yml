@@ -1,5 +1,7 @@
 ---
-docker_image: "confluentinc/cp-zookeeper:{{confluent_platform_docker_version}}"
-host_folders:
-  log_folder: "/home/{{cluster_config_user}}/cp-zookeeper/log"
-  data_folder: "/home/{{cluster_config_user}}/cp-zookeeper/data"
+docker_image: "confluentinc/cp-zookeeper:{{ confluent_platform_docker_version }}"
+
+host_base_folder: "/home/{{ cluster_config_user }}/cp-zookeeper"
+host_data_folders:
+  log_folder: "{{ host_base_folder }}/log"
+  data_folder: "{{ host_base_folder }}/data"

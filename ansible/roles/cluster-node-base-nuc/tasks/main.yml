@@ -6,6 +6,7 @@
   apt:
     name:
      - docker.io=18.09.7-0ubuntu1~18.04.4
+     - python-dockerpty
     update_cache: yes
 
 - name: "Create {{ cluster_config_user }} user"
@@ -25,6 +26,14 @@
   become: yes
   authorized_key:
     user: "{{ cluster_config_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
+- name: "Register ssh autorized_keys into {{ ansible_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ ansible_user }}"
     state: present
     key: '{{ item }}'
   with_lines: cat '{{ role_path }}/files/authorized_keys'

@@ -1,6 +1,6 @@
 ---
 ## Setup and register a new cluster node for digitalpanda
 - hosts:
-    - new-pi3-worker-nodes
+    - cluster_pi3_worker_nodes
   roles: 
     - cluster-node-base-pi3

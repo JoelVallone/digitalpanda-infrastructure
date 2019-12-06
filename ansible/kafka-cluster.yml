@@ -1,0 +1,7 @@
+---
+- hosts: cp_zookeeper_nodes
+  roles:
+    - confluent-zookeeper
+
+
+

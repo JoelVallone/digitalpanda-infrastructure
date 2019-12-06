@@ -1,6 +1,6 @@
 # New
-- buy new worker nodes
-- install and configure Ubuntu 16.01 LTS on worker nodes
+- test nucs in high performance mode
+- run containers as panda-worker
 - setup zookeeper
 - setup kafka-broker
 - setup schema-registry

@@ -1,6 +1,27 @@
 ---
 # This role sets up machine as network bridge based on an internal and external interface
 
+- name: "Create {{ cluster_config_user }} user"
+  become: yes
+  user:
+    name: "{{ cluster_config_user }}"
+    comment: "Cluster configuration account"
+    generate_ssh_key: yes
+
+- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
+  become: yes
+  lineinfile:
+    dest=/etc/sudoers
+    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
+
+- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ cluster_config_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
 - name: Copy "interfaces" file for bridging
   become: yes
   template:
@@ -16,25 +37,6 @@
     dest: /etc/hosts
     owner: root
     mode: "u=rw,g=r,o=r"
-
-- name: "Enable dns server update"
-  become: yes
-  shell: chattr -i /etc/resolv.conf
-  when: internal_dns
-
-- name: "Set internal DNS server ip"
-  become: yes
-  template:
-    src: ./templates/resolv.conf.j2
-    dest: /etc/resolv.conf
-    owner: root
-    mode: "u=rw,g=r,o=r"
-  when: internal_dns
-
-- name: "Disable dns server update"
-  become: yes
-  shell: chattr +i /etc/resolv.conf
-  when: internal_dns
 
 - name: Copy iptables script for bridging
   become: yes

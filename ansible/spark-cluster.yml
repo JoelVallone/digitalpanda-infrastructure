@@ -1,7 +1,7 @@
 ---
 ## Setup and start a spark using : docker, hypriot, raspberry-pi-3-b:workers, x64:master
 
-- hosts: hadoop-master-node hadoop-worker-nodes
+- hosts: hadoop_master_node hadoop_worker_nodes
   roles:
    - { role: "hadoop-common", clear_cluster: true}
 

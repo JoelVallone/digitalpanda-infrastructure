@@ -2,46 +2,48 @@
 - name: "Remove cp-zookeeper root directory on host"
   become: true
   file:
-    path: "{{item}}"
+    path: "{{ host_base_folder }}"
     state: absent
-  with_dict: "{{host_folders}}"
-  when: clear_state
+  when: clear_state | bool
 
 - name: "Create cp-zookeeper directories on host"
-  become: true
   file:
-    path: "{{item}}"
+    path: "{{ item.value }}"
     state: directory
     recurse: yes
-    owner: "{{cluster_config_user}}"
-    group: "{{cluster_config_user}}"
+    owner: "{{ cluster_config_user }}"
+    group: "{{ cluster_config_user }}"
     mode: 0775
-  with_dict: "{{host_folders}}"
+  with_dict: "{{ host_data_folders }}"
 
-
-- name: "Pull image {{docker_image}} and (re)start container with name 'cp-zookeeper-{{node_id}}'"
-  become: yes
+- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-zookeeper-{{ node_id }}'"
+  become: true
   docker_container:
-    name: "cp-zookeeper-{{node_id}}"
-    hostname: "cp-zookeeper-{{node_id}}"
+    name: "cp-zookeeper-{{ node_id }}"
+    hostname: "cp-zookeeper-{{ node_id }}"
     state: started
     pull: true
     restart: yes
-    image: "{{docker_image}}"
+    image: "{{ docker_image }}"
+    #user: "{{ ansible_real_user_id }}:{{ ansible_real_group_id }}"
     volumes:
-      - "{{host_folders.log_folder}}:/var/lib/zookeeper/log"
-      - "{{host_folders.data_folder}}:/var/lib/zookeeper/data"
+      - "{{ host_data_folders.log_folder }}:/var/lib/zookeeper/log"
+      - "{{ host_data_folders.data_folder }}:/var/lib/zookeeper/data"
     ports:
       - "2181:2181"
       - "2888:2888"
       - "3888:3888"
     network_mode: host
+    cpu_quota: "10000"
+    cpu_period: "80000"
+    memory: "2G"
     env:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_SERVER_ID: {{node_id}}
-      ZOOKEEPER_TICK_TIME: 2000 # Millis
-      ZOOKEEPER_INIT_LIMIT: 5 # Ticks
-      ZOOKEEPER_SYNC_LIMIT: 2 # Ticks
-      ZOOKEEPER_SERVERS: "{% for zkp-node in groups['zookeeper-nodes'] %}{{zkp-node}}:2888:3888;{% endfor %}"
+      KAFKA_HEAP_OPTS: "-Xmx1G -Xms1G"
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ZOOKEEPER_SERVER_ID: "{{ node_id | string }}"
+      ZOOKEEPER_TICK_TIME: "2000" # Millis
+      ZOOKEEPER_INIT_LIMIT: "5" # Ticks
+      ZOOKEEPER_SYNC_LIMIT: "2" # Ticks
+      ZOOKEEPER_SERVERS: "{{ groups['cp_zookeeper_nodes'] | join(':2888:3888;')}}:2888:3888"
     restart_policy: always
     tty: yes
