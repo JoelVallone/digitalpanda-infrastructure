@@ -1,4 +1,5 @@
 ---
+# TODO: Consider state cleanup on kafka topics + how to activate clustered mode
 - name: "Pull image {{ docker_image }} and (re)start container with name 'cp-kafka-connect-{{ node_id }}'"
   become: yes
   docker_container:
@@ -11,23 +12,27 @@
     ports:
       - "8083:8083"
     network_mode: host
+    cpu_quota: "5000"
+    cpu_period: "80000"
+    memory: "1G"
     env:
-      CONNECT_BOOTSTRAP_SERVERS: "{% for broker in groups['cp-kafka-nodes'] %}{{ broker }}:9092,{% endfor %}"
-      CONNECT_REST_ADVERTISED_HOST_NAME: connect
-      CONNECT_REST_PORT: 8083
-      CONNECT_GROUP_ID: panda-connect-group
-      CONNECT_CONFIG_STORAGE_TOPIC: panda-connect-configs
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 2
-      CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
-      CONNECT_OFFSET_STORAGE_TOPIC: panda-connect-offsets
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 2
-      CONNECT_STATUS_STORAGE_TOPIC: panda-connect-status
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 2
-      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
-      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://{{ groups['cp-schema-registry'][1] }}:18081"
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+      CONNECT_BOOTSTRAP_SERVERS: "{{ groups['cp_kafka_brokers'] | join(':9092,')}}:9092"
+      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      CONNECT_REST_PORT: "8083"
+      CONNECT_GROUP_ID: "panda-connect-group"
+      CONNECT_CONFIG_STORAGE_TOPIC: "panda-connect-configs"
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "2"
+      CONNECT_OFFSET_FLUSH_INTERVAL_MS: "10000"
+      CONNECT_OFFSET_STORAGE_TOPIC: "panda-connect-offsets"
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "2"
+      CONNECT_STATUS_STORAGE_TOPIC: "panda-connect-status"
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "2"
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
+      CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://{{ groups['cp_schema_registry'][1] }}:18081"
       CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_ZOOKEEPER_CONNECT: "{% for zkp-node in groups['zookeeper-nodes'] %}{{ zkp-node }}:2181,{% endfor %}"
+      CONNECT_ZOOKEEPER_CONNECT: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
     restart_policy: always
     tty: yes

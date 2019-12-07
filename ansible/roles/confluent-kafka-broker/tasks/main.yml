@@ -1,23 +1,28 @@
 ---
+- name: "Stop container with name 'cp-kafka-broker-*'"
+  become: yes
+  docker_container:
+    name: "cp-kafka-broker-{{  node_id }}"
+    state: stopped
+  when: clear_state | bool
+  ignore_errors: yes
+
 - name: "Remove cp-kafka-broker root directory on host"
   become: true
   file:
-    path: "{{ item }}"
+    path: "{{ host_base_folder }}"
     state: absent
-  with_dict: "{{ host_folders }}"
-  when: clear_state
+  when: clear_state | bool
 
 - name: "Create cp-kafka-broker directories on host"
-  become: true
   file:
-    path: "{{ item }}"
+    path: "{{ item.value }}"
     state: directory
     recurse: yes
     owner: "{{ cluster_config_user }}"
     group: "{{ cluster_config_user }}"
     mode: 0775
-  with_dict: "{{ host_folders }}"
-
+  with_dict: "{{ host_data_folders }}"
 
 - name: "Pull image {{ docker_image }} and (re)start container with name 'cp-kafka-broker-{{ node_id }}'"
   become: yes
@@ -29,15 +34,20 @@
     restart: yes
     image: "{{ docker_image }}"
     volumes:
-      - "{{ host_folders.data_folder }}:/var/lib/kafka/data"
+      - "{{ host_data_folders.data_folder }}:/var/lib/kafka/data"
     ports:
       - "9092:9092"
     network_mode: host
+    cpu_quota: "20000"
+    cpu_period: "80000"
+    memory: "5G"
     env:
       KAFKA_BROKER_ID: "1{{  node_id  }}"
-      KAFKA_ZOOKEEPER_CONNECT: "{% for zkp-node in groups['zookeeper-nodes'] %}{{ zkp-node }}:2181,{% endfor %}" #"{{ groups['cp_zookeeper_nodes'] | join(':2888:3888;')}}:2888:3888"
-      KAFKA_ADVERTISED_LISTENERS: "LISTENER_INT://cp-kafka-broker-{{ node_id }}:9092,LISTENER_EXT://{{ inventory_hostname }}:9092"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INT:PLAINTEXT,LISTENER_EXT:PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_HEAP_OPTS: "-Xmx3G -Xms3G"
+      KAFKA_ZOOKEEPER_CONNECT: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
+      KAFKA_ADVERTISED_LISTENERS: "LISTENER_EXT://{{ inventory_hostname }}:9092"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "LISTENER_EXT"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "LISTENER_EXT:PLAINTEXT"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "2"
     restart_policy: always
     tty: yes

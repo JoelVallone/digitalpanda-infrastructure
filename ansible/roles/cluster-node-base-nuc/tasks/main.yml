@@ -9,6 +9,14 @@
      - python-dockerpty
     update_cache: yes
 
+- name: "Unmask, enable & start docker service "
+  become: yes
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+    masked: no
+
 - name: "Create {{ cluster_config_user }} user"
   become: yes
   user:

@@ -43,12 +43,7 @@ stressed-panda-1.lab.digitalpanda.org node_id=1
 stressed-panda-2.lab.digitalpanda.org node_id=2
 fanless1.digitalpanda.org node_id=3
 
-[bak_cp_zookeeper_nodes]
-fanless1.digitalpanda.org
-stressed-panda-1.lab.digitalpanda.org
-stressed-panda-2.lab.digitalpanda.org
-
-[cp_kafka_nodes]
+[cp_kafka_brokers]
 stressed-panda-1.lab.digitalpanda.org
 stressed-panda-2.lab.digitalpanda.org
 

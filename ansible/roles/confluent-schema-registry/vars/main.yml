@@ -1,4 +1,2 @@
 ---
 docker_image: "confluentinc/cp-schema-registry:{{ confluent_platform_docker_version }}"
-host_folders:
-  data_folder: "/home/{{ cluster_config_user }}/cp-schema-registry/data"

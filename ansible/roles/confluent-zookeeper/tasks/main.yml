@@ -1,4 +1,12 @@
 ---
+- name: "Stop container with name 'cp-zookeeper-*'"
+  become: yes
+  docker_container:
+    name: "cp-zookeeper-{{  node_id }}"
+    state: stopped
+  when: clear_state | bool
+  ignore_errors: yes
+
 - name: "Remove cp-zookeeper root directory on host"
   become: true
   file:

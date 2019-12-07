@@ -1,2 +1,6 @@
 ---
 docker_image: "confluentinc/cp-kafka:{{ confluent_platform_docker_version }}"
+
+host_base_folder: "/home/{{ cluster_config_user }}/cp-kafka-broker"
+host_data_folders:
+  data_folder: "{{ host_base_folder }}/data"
