@@ -15,6 +15,7 @@
   when: clear_state | bool
 
 - name: "Create cp-zookeeper directories on host"
+  become: yes
   file:
     path: "{{ item.value }}"
     state: directory
@@ -24,7 +25,7 @@
     mode: 0775
   with_dict: "{{ host_data_folders }}"
 
-- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-zookeeper-{{ node_id }}'"
+- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-zookeeper-*'"
   become: true
   docker_container:
     name: "cp-zookeeper-{{ node_id }}"

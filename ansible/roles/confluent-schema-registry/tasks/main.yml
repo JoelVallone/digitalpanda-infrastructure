@@ -1,5 +1,5 @@
 ---
-- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-schema-registry-{{ node_id }}'"
+- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-schema-registry'"
   become: yes
   docker_container:
     name: "cp-schema-registry"
@@ -12,8 +12,9 @@
       - "18081:18081"
     network_mode: host
     cpu_quota: "5000"
-    cpu_period: "80000"
+    cpu_period: "40000"
     memory: "768M"
+    etc_hosts: "{{ lookup('template', 'hosts') }}"
     env:
       KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"

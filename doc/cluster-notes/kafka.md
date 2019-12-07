@@ -58,12 +58,14 @@ docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   kafka-console-consumer --bootstrap-server stressed-panda-1.lab.digitalpanda.org:9092 --topic bar --from-beginning --max-messages 42
 ```
 
+# Avro schema registry
+general https://docs.confluent.io/current/schema-registry/installation/deployment.html
+config keys: https://docs.confluent.io/current/schema-registry/installation/config.html
+api calls examples: https://docs.confluent.io/3.1.1/schema-registry/docs/intro.html
+
+
 
 # Kafka connect
 user-guide: https://docs.confluent.io/current/connect/userguide.html
 config keys: https://docs.confluent.io/current/connect/references/allconfigs.html
     0.5 GiB per cassandra sink => 4 => 2 GiB
-
-# Avro schema registry
-general https://docs.confluent.io/current/schema-registry/installation/deployment.html
-config keys: https://docs.confluent.io/current/schema-registry/installation/config.html

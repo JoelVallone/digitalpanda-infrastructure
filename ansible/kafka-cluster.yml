@@ -7,6 +7,10 @@
   roles:
     - confluent-kafka-broker
 
+- hosts: cp_schema_registry
+  roles:
+     - confluent-schema-registry
+
 
 
 

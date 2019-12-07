@@ -15,6 +15,7 @@
   when: clear_state | bool
 
 - name: "Create cp-kafka-broker directories on host"
+  become: yes
   file:
     path: "{{ item.value }}"
     state: directory
@@ -24,7 +25,7 @@
     mode: 0775
   with_dict: "{{ host_data_folders }}"
 
-- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-kafka-broker-{{ node_id }}'"
+- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-kafka-broker-*'"
   become: yes
   docker_container:
     name: "cp-kafka-broker-{{  node_id }}"
@@ -42,12 +43,14 @@
     cpu_period: "80000"
     memory: "5G"
     env:
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=WARN,state.change.logger=WARN"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: "WARN"
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: "ERROR"
       KAFKA_BROKER_ID: "1{{  node_id  }}"
       KAFKA_HEAP_OPTS: "-Xmx3G -Xms3G"
       KAFKA_ZOOKEEPER_CONNECT: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
-      KAFKA_ADVERTISED_LISTENERS: "LISTENER_EXT://{{ inventory_hostname }}:9092"
-      KAFKA_INTER_BROKER_LISTENER_NAME: "LISTENER_EXT"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "LISTENER_EXT:PLAINTEXT"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://{{ inventory_hostname }}:9092"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "2"
     restart_policy: always
     tty: yes
