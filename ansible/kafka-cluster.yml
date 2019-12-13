@@ -11,6 +11,10 @@
   roles:
      - confluent-schema-registry
 
+ - hosts: cp_kafka_connect_nodes
+   roles:
+     - confluent-kafka-connect
+
 
 
 

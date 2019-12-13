@@ -3,6 +3,18 @@
   include_role:
     name: docker-pre-image
 
+- name: "Download connector jars into connect hosts"
+  shell: "test ! -f '{{ host_data_folders.jar_folder }}/{{ item.file_in_host }}' && curl -k -SL '{{ item.url }}' | tar -xzf - -C {{ host_data_folders.jar_folder }} --strip-components={{ item.strip_component }} {{ item.file_in_archive }} || true"
+  with_items: "{{ connect_jars_archive }}"
+
+- name: "Make connect jars executable"
+  become: yes
+  file:
+    dest: "{{ host_data_folders.jar_folder }}"
+    mode: 0775
+    recurse: yes
+  with_items: "{{ host_data_folders.jar_folder }}"
+
 # TODO: Consider state cleanup on kafka topics + how to activate clustered mode
 - name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}"
   become: yes
@@ -13,14 +25,17 @@
     pull: true
     restart: yes
     image: "{{ docker_image }}"
+    volumes:
+      - "{{ host_data_folders.jar_folder }}:/etc/kafka-connect/jars"
+      - "{{ host_data_folders.file_sink_folder }}:/tmp/kafka-connect/file-sink"
     ports:
       - "8083:8083"
     network_mode: host
     cpu_quota: "5000"
     cpu_period: "80000"
-    memory: "1G"
+    memory: "2G"
     env:
-      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+      KAFKA_HEAP_OPTS: "-Xmx1G -Xms1G"
       CONNECT_BOOTSTRAP_SERVERS: "{{ groups['cp_kafka_brokers'] | join(':9092,')}}:9092"
       CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
       CONNECT_REST_PORT: "8083"
@@ -34,10 +49,16 @@
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "2"
       CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
       CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://{{ groups['cp_schema_registry'][1] }}:18081"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://{{ groups['cp_schema_registry'][0] }}:18081"
       CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_ZOOKEEPER_CONNECT: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
+      # CLASSPATH required due to CC-2422
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.3.1.jar
+      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
+      CONNECT_LOG4J_LOGGERS: "org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR"
     restart_policy: always
     tty: yes
   when: not (absent_from_node | bool)

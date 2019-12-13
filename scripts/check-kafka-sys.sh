@@ -23,7 +23,7 @@ echo "-> Describe topic"
 docker_run_kafka 'kafka-topics --describe --topic bar --zookeeper stressed-panda-1.lab.digitalpanda.org:2181'
 echo "-> Produce message"
 docker_run_kafka 'bash -c "date | kafka-console-producer --broker-list stressed-panda-1.lab.digitalpanda.org:9092,stressed-panda-2.lab.digitalpanda.org:9092 --topic bar && echo produced date now message"'
-echo "-> Consume message (press ctrl-c to continue)"
+echo "-> Consume message"
 docker_run_kafka 'kafka-console-consumer --bootstrap-server stressed-panda-1.lab.digitalpanda.org:9092 --topic bar --from-beginning --timeout-ms 5000 || true'
 echo -e " Continuing checks ..."
 echo ""

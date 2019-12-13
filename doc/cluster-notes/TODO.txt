@@ -2,7 +2,9 @@
 - test nucs in high performance mode
 - Optional: run containers as panda-worker user (fix nuc disk access rights binding)
 - Optional: setup network in bridge mode with manual hosts file "etc_hosts"
-- setup kafka-connect (cluster mode) with cassandra connector
+- setup kafka-connect with cassandra connector
+    - confirm cluster mode setup
+    - test connector file sink, then cassandra sink from avro topic
 - setup new-cassandra to multi-node mode
     - transfer metrics from old cassandra to kafka topic
     - sink raw metrics to new-cassandra table

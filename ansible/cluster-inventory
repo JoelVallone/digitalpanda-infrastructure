@@ -50,6 +50,6 @@ stressed-panda-2.lab.digitalpanda.org
 [cp_schema_registry]
 fanless1.digitalpanda.org
 
-[cp_connect_nodes]
+[cp_kafka_connect_nodes]
 stressed-panda-1.lab.digitalpanda.org
 stressed-panda-2.lab.digitalpanda.org
