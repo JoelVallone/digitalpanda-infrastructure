@@ -27,47 +27,50 @@ ZooKeeper Commands: The Four Letter Word : https://zookeeper.apache.org/doc/r3.3
 ISR : In Sync Replica
 config keys: https://docs.confluent.io/current/installation/configuration/broker-configs.html
 
-Check if the broker started:
+### Check if the broker started:
 ```shell script
 docker logs cp-kafka-broker-1 | grep started
 ```
 
-Create topic: 
+### Create topic: 
 ```shell script
 sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   kafka-topics --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --create --topic bar --partitions 3 --replication-factor 2 --if-not-exists 
 
 ```
 
-Describe topic: 
+### Describe topic: 
 ```shell script
 sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   kafka-topics  --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --topic bar --describe
 ```
 
-Delete topic: 
+### Delete topic:
+Ask brokers to delete topics
 ```shell script
 sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   kafka-topics  --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --topic bar --delete 
 ```
+
+If did not succeed, remove from zookeeper
 ```shell script
 sudo docker run -ti --net=host --rm confluentinc/cp-kafka:5.3.1 zookeeper-shell fanless1:2181<<
 > get /brokers/topics/bar
 > rmr /brokers/topics/bar
 > rmr /admin/delete_topics/bar
 ```
-for each broker:
+For each broker ensure topic partition directories are removed:
 ```shell script
 sudo rm -r  /home/panda-config/cp-kafka-broker/data/bar-*
 ```
 
-Produce data from console:
+### Produce data from console:
 ```shell script
 sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   bash -c "seq 42 | kafka-console-producer --broker-list stressed-panda-1.lab.digitalpanda.org:9092,stressed-panda-2.lab.digitalpanda.org:9092 --topic bar && echo 'Produced 42 messages.'"
 ```
 
-Consume data from console:
+### Consume data from console:
 ```shell script
 #Might take some time when it is the first time that the broker system gets a request from a consumer.
 # => The brokers must create the topic __consumers_offset
@@ -78,9 +81,12 @@ sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
 # Avro schema registry
 general https://docs.confluent.io/current/schema-registry/installation/deployment.html
 config keys: https://docs.confluent.io/current/schema-registry/installation/config.html
-api calls examples: https://docs.confluent.io/3.1.1/schema-registry/docs/intro.html
+api calls examples for testing: https://docs.confluent.io/3.1.1/schema-registry/docs/intro.html
 
-
+### Check server up
+```shell script
+curl -X GET "http://fanless1:18081/subjects"
+```
 
 # Kafka connect
 user-guide: https://docs.confluent.io/current/connect/userguide.html

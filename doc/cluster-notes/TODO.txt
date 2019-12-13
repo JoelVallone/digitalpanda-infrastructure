@@ -3,7 +3,6 @@
 - Optional: run containers as panda-worker user (fix nuc disk access rights binding)
 - Optional: setup network in bridge mode with manual hosts file "etc_hosts"
 - setup kafka-connect (cluster mode) with cassandra connector
-  - test schema registry creation/get/deletion
 - setup new-cassandra to multi-node mode
     - transfer metrics from old cassandra to kafka topic
     - sink raw metrics to new-cassandra table

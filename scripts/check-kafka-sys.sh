@@ -17,15 +17,23 @@ remote_cmd 'for ip in "192.168.1.1" "192.168.1.242" "192.168.1.241" ; do mode=$(
 echo ""
 
 echo "=== Kafka - brokers ==="
-echo "-> Topic creation (if exists)"
+echo "-> Topic creation (if not exists)"
 docker_run_kafka 'kafka-topics --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --create --topic bar --partitions 3 --replication-factor 2 --if-not-exists'
 echo "-> Describe topic"
 docker_run_kafka 'kafka-topics --describe --topic bar --zookeeper stressed-panda-1.lab.digitalpanda.org:2181'
 echo "-> Produce message"
 docker_run_kafka 'bash -c "date | kafka-console-producer --broker-list stressed-panda-1.lab.digitalpanda.org:9092,stressed-panda-2.lab.digitalpanda.org:9092 --topic bar && echo produced date now message"'
 echo "-> Consume message (press ctrl-c to continue)"
-docker_run_kafka 'kafka-console-consumer --bootstrap-server stressed-panda-1.lab.digitalpanda.org:9092 --topic bar --from-beginning --timeout-ms 15000 || true'
-echo -e " Continue..."
+docker_run_kafka 'kafka-console-consumer --bootstrap-server stressed-panda-1.lab.digitalpanda.org:9092 --topic bar --from-beginning --timeout-ms 5000 || true'
+echo -e " Continuing checks ..."
 echo ""
 
 echo "=== Avro schema registry ==="
+echo "-> Get schema subject lits"
+curl -X GET "http://fanless1:18081/subjects"
+echo "-> Create new schema with subject"
+curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+    --data '{"schema": "{\"type\": \"string\"}"}' \
+    "http://fanless1:18081/subjects/a-topic-key/versions"
+echo "-> Get latest schema from subject"
+curl -X GET "http://fanless1:18081/subjects/a-topic-key/versions/latest"
