@@ -18,7 +18,7 @@ image: https://github.com/confluentinc/cp-docker-images/tree/5.3.1-post/debian/z
 multi node: https://docs.confluent.io/current/zookeeper/deployment.html#multi-node-setup
 ```shell script
 ansible-playbook -i cluster-inventory kafka-cluster.yml -e clear_state=true
-docker logs -f cp-zookeeper-0
+sudo docker logs -f cp-zookeeper-0
 for ip in '192.168.1.1' '192.168.1.242' '192.168.1.241' ; do mode=$(echo stat | nc -q 1 $ip 2181 | grep "Mode"); echo "$ip => $mode"; done
 ```
 ZooKeeper Commands: The Four Letter Word : https://zookeeper.apache.org/doc/r3.3.3/zookeeperAdmin.html#sc_maintenance
@@ -29,7 +29,7 @@ config keys: https://docs.confluent.io/current/installation/configuration/broker
 
 ### Check if the broker started:
 ```shell script
-docker logs cp-kafka-broker-1 | grep started
+sudo docker logs cp-kafka-broker-1 | grep started
 ```
 
 ### Create topic: 

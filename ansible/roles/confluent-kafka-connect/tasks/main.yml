@@ -1,10 +1,14 @@
 ---
+- name: "Prepare environment for docker instance"
+  include_role:
+    name: docker-pre-image
+
 # TODO: Consider state cleanup on kafka topics + how to activate clustered mode
-- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-kafka-connect-{{ node_id }}'"
+- name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}"
   become: yes
   docker_container:
-    name: "cp-kafka-connect-{{ node_id }}"
-    hostname: "cp-kafka-connect-{{ node_id }}"
+    name: "{{ docker_instance_name }}"
+    hostname: "{{ docker_instance_name }}"
     state: started
     pull: true
     restart: yes
@@ -36,3 +40,4 @@
       CONNECT_ZOOKEEPER_CONNECT: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
     restart_policy: always
     tty: yes
+  when: not (absent_from_node | bool)

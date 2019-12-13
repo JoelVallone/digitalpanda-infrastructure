@@ -1,43 +1,13 @@
 ---
-- name: "Stop container with name 'cp-zookeeper-*'"
-  become: yes
-  docker_container:
-    name: "cp-zookeeper-{{  node_id }}"
-    state: stopped
-  when: clear_state | bool
-  ignore_errors: yes
+- name: "Prepare environment for docker instance"
+  include_role:
+    name: docker-pre-image
 
-- name: "Remove container with name 'cp-zookeeper-*'"
-  become: yes
-  docker_container:
-    name: "cp-zookeeper-{{  node_id }}"
-    cleanup: yes
-  when: clear_state | bool
-  ignore_errors: yes
-
-- name: "Remove cp-zookeeper root directory on host"
-  become: true
-  file:
-    path: "{{ host_base_folder }}"
-    state: absent
-  when: clear_state | bool
-
-- name: "Create cp-zookeeper directories on host"
-  become: yes
-  file:
-    path: "{{ item.value }}"
-    state: directory
-    recurse: yes
-    owner: "{{ cluster_config_user }}"
-    group: "{{ cluster_config_user }}"
-    mode: 0775
-  with_dict: "{{ host_data_folders }}"
-
-- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-zookeeper-*'"
+- name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}"
   become: true
   docker_container:
-    name: "cp-zookeeper-{{ node_id }}"
-    hostname: "cp-zookeeper-{{ node_id }}"
+    name: "{{ docker_instance_name }}"
+    hostname: "{{ docker_instance_name }}"
     state: started
     pull: true
     restart: yes
@@ -64,3 +34,4 @@
       ZOOKEEPER_SERVERS: "{{ groups['cp_zookeeper_nodes'] | join(':2888:3888;')}}:2888:3888"
     restart_policy: always
     tty: yes
+  when: not (absent_from_node | bool)

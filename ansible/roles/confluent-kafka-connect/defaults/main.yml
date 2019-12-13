@@ -1,2 +1,2 @@
 ---
-clear_state: false
+absent_from_node: false
