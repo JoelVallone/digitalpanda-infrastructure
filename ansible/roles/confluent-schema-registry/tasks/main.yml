@@ -16,7 +16,7 @@
     memory: "768M"
     etc_hosts: "{{ lookup('template', 'hosts') }}"
     env:
-      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+      SCHEMA_REGISTRY_HEAP_OPTS: "-Xmx512M -Xms512M"
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
       SCHEMA_REGISTRY_HOST_NAME: "{{ inventory_hostname }}"
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:18081"

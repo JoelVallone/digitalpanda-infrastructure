@@ -14,6 +14,14 @@
     state: absent
   when: clear_state | bool
 
+- name: "Remove container with name 'cp-kafka-broker-*'"
+  become: yes
+  docker_container:
+    name: "cp-kafka-broker-{{  node_id }}"
+    cleanup: yes
+  when: clear_state | bool
+  ignore_errors: yes
+
 - name: "Create cp-kafka-broker directories on host"
   become: yes
   file:
@@ -52,5 +60,6 @@
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://{{ inventory_hostname }}:9092"
       KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "2"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
     restart_policy: always
     tty: yes

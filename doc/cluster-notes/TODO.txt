@@ -2,12 +2,10 @@
 - test nucs in high performance mode
 - Optional: run containers as panda-worker user (fix nuc disk access rights binding)
 - Optional: setup network in bridge mode with manual hosts file "etc_hosts"
-- setup schema-registry
-  - java heap allocation
-  - test schema creation/get/deletion
-- transfer metrics from old cassandra to kafka topic
-- setup new-cassandra to multi-node mode
 - setup kafka-connect (cluster mode) with cassandra connector
+  - test schema registry creation/get/deletion
+- setup new-cassandra to multi-node mode
+    - transfer metrics from old cassandra to kafka topic
     - sink raw metrics to new-cassandra table
 - rewrite pi iot client to write raw measure to kafka topic
 - setup YARN & HDFS

@@ -24,6 +24,7 @@ for ip in '192.168.1.1' '192.168.1.242' '192.168.1.241' ; do mode=$(echo stat | 
 ZooKeeper Commands: The Four Letter Word : https://zookeeper.apache.org/doc/r3.3.3/zookeeperAdmin.html#sc_maintenance
 
 ## kafka-broker
+ISR : In Sync Replica
 config keys: https://docs.confluent.io/current/installation/configuration/broker-configs.html
 
 Check if the broker started:
@@ -33,20 +34,36 @@ docker logs cp-kafka-broker-1 | grep started
 
 Create topic: 
 ```shell script
-docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
-  kafka-topics --create --topic bar --partitions 3 --replication-factor 2 --if-not-exists --zookeeper stressed-panda-1.lab.digitalpanda.org:2181
+sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
+  kafka-topics --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --create --topic bar --partitions 3 --replication-factor 2 --if-not-exists 
 
 ```
 
 Describe topic: 
 ```shell script
-docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
-  kafka-topics --describe --topic bar --zookeeper stressed-panda-1.lab.digitalpanda.org:2181
+sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
+  kafka-topics  --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --topic bar --describe
+```
+
+Delete topic: 
+```shell script
+sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
+  kafka-topics  --zookeeper stressed-panda-1.lab.digitalpanda.org:2181 --topic bar --delete 
+```
+```shell script
+sudo docker run -ti --net=host --rm confluentinc/cp-kafka:5.3.1 zookeeper-shell fanless1:2181<<
+> get /brokers/topics/bar
+> rmr /brokers/topics/bar
+> rmr /admin/delete_topics/bar
+```
+for each broker:
+```shell script
+sudo rm -r  /home/panda-config/cp-kafka-broker/data/bar-*
 ```
 
 Produce data from console:
 ```shell script
-docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
+sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   bash -c "seq 42 | kafka-console-producer --broker-list stressed-panda-1.lab.digitalpanda.org:9092,stressed-panda-2.lab.digitalpanda.org:9092 --topic bar && echo 'Produced 42 messages.'"
 ```
 
@@ -54,7 +71,7 @@ Consume data from console:
 ```shell script
 #Might take some time when it is the first time that the broker system gets a request from a consumer.
 # => The brokers must create the topic __consumers_offset
-docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
+sudo docker run --net=host --rm confluentinc/cp-kafka:5.3.1 \
   kafka-console-consumer --bootstrap-server stressed-panda-1.lab.digitalpanda.org:9092 --topic bar --from-beginning --max-messages 42
 ```
 
