@@ -21,8 +21,8 @@
       - "2888:2888"
       - "3888:3888"
     network_mode: host
-    cpu_quota: "10000"
-    cpu_period: "80000"
+    cpu_quota:  "100000"
+    cpu_period: "100000"
     memory: "2G"
     env:
       KAFKA_HEAP_OPTS: "-Xmx1G -Xms1G"

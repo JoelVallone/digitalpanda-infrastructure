@@ -17,8 +17,8 @@
     ports:
       - "9092:9092"
     network_mode: host
-    cpu_quota: "20000"
-    cpu_period: "80000"
+    cpu_quota:  "200000"
+    cpu_period: "100000"
     memory: "5G"
     env:
       KAFKA_LOG4J_LOGGERS: "kafka.controller=WARN,state.change.logger=WARN"

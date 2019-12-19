@@ -15,8 +15,8 @@
     ports:
       - "18081:18081"
     network_mode: host
-    cpu_quota: "5000"
-    cpu_period: "40000"
+    cpu_quota:   "50000"
+    cpu_period: "100000"
     memory: "768M"
     etc_hosts: "{{ lookup('template', 'hosts') }}"
     env:

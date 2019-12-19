@@ -20,7 +20,7 @@
 
 
 # Old
-- update pi3-1 to new hypriot OS version OR troublshoot docker registry
+- update pi3-1 to new hypriot OS version OR troubleshoot docker registry
 - fix datanode display httpAddress to host ip instead of localhost in namenode ui
 - fix ressource and node managers logging => not to default location container-unreachable
 - enhance hadoop-common parametrization

@@ -104,11 +104,21 @@ kafka connect jdbc:
 ```shell script
 sudo docker logs cp-kafka-connect-1 | grep started
 ```
+Example output:
+[2016-08-25 19:18:38,517] INFO Kafka Connect started (org.apache.kafka.connect.runtime.Connect)
+[2016-08-25 19:18:38,557] INFO Herder started (org.apache.kafka.connect.runtime.distributed.DistributedHerder)
 
-### Create a connect source connector
+
+### Create a connect jdbc source connector
 curl -X POST \
   -H "Content-Type: application/json" \
   --data '{ "name": "quickstart-jdbc-source", "config": { "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector", "tasks.max": 1, "connection.url": "jdbc:mysql://127.0.0.1:3306/connect_test?user=root&password=confluent", "mode": "incrementing", "incrementing.column.name": "id", "timestamp.column.name": "modified", "topic.prefix": "quickstart-jdbc-", "poll.interval.ms": 1000 } }' \
   http://$CONNECT_HOST:28083/connectors
+  
+### Create a connect file sink connector
+curl -X POST -H "Content-Type: application/json" \
+    --data '{"name": "quickstart-avro-file-sink", "config": {"connector.class":"org.apache.kafka.connect.file.FileStreamSinkConnector", "tasks.max":"1", "topics":"quickstart-jdbc-test", "file": "/tmp/quickstart/jdbc-output.txt"}}' \
+    http://$CONNECT_HOST:28083/connectors
+  
 ### Check connector status:
 curl -s -X GET http://$CONNECT_HOST:28083/connectors/quickstart-jdbc-source/status
