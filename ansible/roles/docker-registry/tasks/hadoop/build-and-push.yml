@@ -8,7 +8,7 @@
     tag: latest
     push: yes
   when:
-    - inventory_hostname in groups['x64-build-node']
+    - inventory_hostname in groups['x64_build_node']
     - '"hadoop" in required_containers'
  
 - name: "Build 'hadoop-arm' docker image"
@@ -19,5 +19,5 @@
     tag: latest
     push: yes
   when:
-    - inventory_hostname in groups['arm-build-node']
+    - inventory_hostname in groups['arm_build_node']
     - '"hadoop-arm" in required_containers'

@@ -1,50 +1,32 @@
 ---
-- name: "Remove hadoop root directory on host"
-  become: true
-  file:
-    path: "{{hadoop.host.exposed_folder.base}}"
-    state: absent
-  when: clear_cluster == true
+- set_fact:
+    docker_image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}:latest"
+  when: hadoop_container_name != ""
 
-- name: "Create hadoop directories on host"
-  file:
-    path: "{{item}}"
-    state: directory
-    owner: "{{cluster_config_user}}"
-    group: "{{cluster_config_user}}"
-    mode: 0775
-  with_items:
-      - "{{hadoop.host.exposed_folder.base}}"
-      - "{{hadoop.host.exposed_folder.config}}"
-      - "{{hadoop.host.exposed_folder.log}}"
-      - "{{hadoop.host.exposed_folder.data_master}}"
-      - "{{hadoop.host.exposed_folder.data_slave}}"
-  when: clear_cluster == false
-  
+- name: "Prepare environment for docker instance"
+  include_role:
+    name: docker-pre-image
+
 - name: "Add hadoop global configuration files on host"
   template:
-    src: "{{item}}.j2"
-    dest: "{{hadoop.host.exposed_folder.config}}/{{item}}"
+    src: "{{ item }}.j2"
+    dest: "{{ hadoop.host.exposed_folder.config }}/{{ item }}"
   with_items:
     - core-site.xml
     - hdfs-site.xml
     - yarn-site.xml
-  when: clear_cluster == false
+  when: (pristine_instance | bool) or (absent_from_node | bool)
 
-- set_fact:
-    hadoop_image_name: "{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}"
-  when: hadoop_container_name != ""
-
-- name: "Pull image {{hadoop_image_name}} and (re)start container with name {{ hadoop_container_name }} "
+- name: "Pull image {{ docker_image }} and (re)start container with name {{ hadoop_container_name }}-* "
   become: yes
   docker_container:
-    name: "{{hadoop_container_name}}"
+    name: "{{ hadoop_container_name }}"
     state: started
     restart: yes
-    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{{hadoop_image_name}}:latest"
+    image: "{{ docker_image }}"
     volumes:
-      - "{{hadoop.host.exposed_folder.base}}:{{hadoop.container.exposed_folder.base}}"
+      - "{{ host_data_folders }}:{{ hadoop.container.exposed_folder.base }}"
     network_mode: host
-    restart_policy: no
+    restart_policy: always
     tty: yes
   when: hadoop_container_name != ""

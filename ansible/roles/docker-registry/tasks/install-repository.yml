@@ -11,7 +11,7 @@
     ports:
       - "5000:5000"
     restart_policy: always
-  when: inventory_hostname in groups['docker-registry']
+  when: inventory_hostname in groups['docker_registry']
 
 - name: "Check registry reachable"
   uri:

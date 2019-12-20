@@ -117,8 +117,8 @@ curl -X POST \
   
 ### Create a connect file sink connector
 curl -X POST -H "Content-Type: application/json" \
-    --data '{"name": "quickstart-avro-file-sink", "config": {"connector.class":"org.apache.kafka.connect.file.FileStreamSinkConnector", "tasks.max":"1", "topics":"quickstart-jdbc-test", "file": "/tmp/quickstart/jdbc-output.txt"}}' \
-    http://$CONNECT_HOST:28083/connectors
+    --data '{  "name": "quickstart-avro-file-sink",  "config": {    "connector.class": "org.apache.kafka.connect.file.FileStreamSinkConnector",    "tasks.max": "1",    "topics": "bar",    "file": "/tmp/kafka-connect/file-sink/bar.txt"  }}' \
+    http://stressed-panda-1:8083/connectors
   
 ### Check connector status:
-curl -s -X GET http://$CONNECT_HOST:28083/connectors/quickstart-jdbc-source/status
+curl -s -X GET http://stressed-panda-1:8083/connectors/quickstart-avro-file-sink/status

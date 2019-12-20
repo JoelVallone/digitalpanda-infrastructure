@@ -1,3 +1,4 @@
 ---
+pristine_instance: false
+absent_from_node: false
 hadoop_container_name: ""
-clear_cluster: false

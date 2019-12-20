@@ -41,6 +41,7 @@ curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
     "http://fanless1:18081/subjects/a-topic-key/versions"
 echo -e "\n-> Get latest schema from subject"
 curl -X GET "http://fanless1:18081/subjects/a-topic-key/versions/latest"
+echo -e "\n\n"
 
 echo "=== Kafka - connect cluster ==="
 echo "-> Connect workers status"
@@ -48,7 +49,7 @@ echo "--> stressed-panda-1:"
 curl -s -X GET http://192.168.0.241:8083
 echo -e "\n--> stressed-panda-2:"
 curl -s -X GET http://192.168.0.242:8083
-echo ""
+echo -e "\n"
 
 echo ""
 echo ""

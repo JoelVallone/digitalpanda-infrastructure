@@ -1,13 +1,19 @@
 ---
-hadoop :
-  host:
-    exposed_folder :
-      base: "/home/{{cluster_config_user}}/hadoop"
-      config: "/home/{{cluster_config_user}}/hadoop/config"
-      log: "/home/{{cluster_config_user}}/hadoop/log"
-      data_master: "/home/{{cluster_config_user}}/hadoop/hdfs/master/data"
-      data_slave: "/home/{{cluster_config_user}}/hadoop/hdfs/slave/data"
 
+docker_image: "to-define-at-runtime"
+
+# Docker pre-image variables
+docker_instance_name: "{{ hadoop_container_name }}-{{ node_id }}"
+host_base_folder: "/home/{{ cluster_config_user }}/hadoop"
+host_data_folders:
+  config: "{{ host_base_folder }}/config"
+  log: "{{ host_base_folder }}/log"
+  data_master: "{{ host_base_folder }}/hdfs/master/data"
+  data_slave: "{{ host_base_folder }}/hdfs/slave/data"
+
+
+#Old
+hadoop :
   container:
     base_folder: "/opt/hadoop"
     install_folder: "/opt/hadoop/hadoop-2.9.0"
@@ -27,5 +33,5 @@ hadoop :
      host_fqdn: "{{groups['hadoop-master-node'][0]}}"
 
 cluster_node:
-  host_fqdn: "pi3-{{ node_id  }}.{{ cluster_domain }}"
-  ip: "192.168.1.10{{ node_id }}"
+  host_fqdn: "stressed-panda-{{ node_id  }}.{{ cluster_domain }}"
+  ip: "192.168.1.24{{ node_id }}"
