@@ -2,8 +2,9 @@ FROM hypriot/rpi-java
 MAINTAINER Joel Vallone <joel.vallone@gmail.com>
 
 ENV JAVA_HEAP_SIZE 2048
+ENV HADOOP_VERSION "2.9.2"
 ENV HADOOP_BASE  /opt/hadoop
-ENV HADOOP_PREFIX ${HADOOP_BASE}/hadoop-2.9.0
+ENV HADOOP_PREFIX ${HADOOP_BASE}/hadoop-2.9.2
 ENV HADOOP_CONF_DIR ${HADOOP_BASE}/ext/config 
 ENV HADOOP_LOG_DIR ${HADOOP_BASE}/ext/log
 
@@ -14,9 +15,9 @@ RUN apt-get update && \
 # Install hadoop 2.9
 RUN mkdir -p ${HADOOP_BASE} && \
     cd ${HADOOP_BASE} && \
-    wget http://mirror.switch.ch/mirror/apache/dist/hadoop/common/hadoop-2.9.0/hadoop-2.9.0.tar.gz && \
-    tar -zxf hadoop-2.9.0.tar.gz && \
-    rm hadoop-2.9.0.tar.gz;
+    wget https://www-eu.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    tar -zxf hadoop-${HADOOP_VERSION}.tar.gz && \
+    rm hadoop-${HADOOP_VERSION}.tar.gz;
 
 # Setup hadoop directories
 WORKDIR ${HADOOP_BASE}
@@ -27,6 +28,7 @@ RUN mkdir -p $HADOOP_BASE/ext/hdfs/master/data && \
 
 # Load default settings
 COPY entrypoint.sh /opt/entrypoint.sh
+RUN chmod gu+x /opt/entrypoint.sh
 COPY default-config ${HADOOP_CONF_DIR}
 
 ENTRYPOINT /opt/entrypoint.sh

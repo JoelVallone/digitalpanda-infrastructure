@@ -41,6 +41,28 @@ cassandra:
 
 confluent_platform_docker_version: 5.3.1
 
+apache_hadoop:
+    version: "2.9.2"
+
+hadoop :
+  container:
+    base_folder: "/opt/hadoop"
+    install_folder: "/opt/hadoop/hadoop-{{ apache_hadoop.version }}"
+    exposed_folder:
+      base: "/opt/hadoop/ext"
+      config: "/opt/hadoop/ext/config"
+      log: "/opt/hadoop/ext/log"
+      data_master: "/opt/hadoop/ext/hdfs/master/data"
+      data_slave: "/opt/hadoop/ext/hdfs/slave/data"
+
+  hdfs:
+    namenode:
+      host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
+
+  yarn:
+    ressourcemanager:
+     host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
+
 inject_test_data: false
 
 digitalpanda_backend_version: 1.0.0

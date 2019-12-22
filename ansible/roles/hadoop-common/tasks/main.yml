@@ -1,7 +1,6 @@
 ---
 - set_fact:
-    docker_image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}:latest"
-  when: hadoop_container_name != ""
+    docker_image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}:{{ apache_hadoop.version }}"
 
 - name: "Prepare environment for docker instance"
   include_role:
@@ -10,23 +9,22 @@
 - name: "Add hadoop global configuration files on host"
   template:
     src: "{{ item }}.j2"
-    dest: "{{ hadoop.host.exposed_folder.config }}/{{ item }}"
+    dest: "{{ host_data_folders.config }}/{{ item }}"
   with_items:
     - core-site.xml
     - hdfs-site.xml
     - yarn-site.xml
-  when: (pristine_instance | bool) or (absent_from_node | bool)
 
-- name: "Pull image {{ docker_image }} and (re)start container with name {{ hadoop_container_name }}-* "
+- name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}-* "
   become: yes
   docker_container:
-    name: "{{ hadoop_container_name }}"
+    name: "{{ docker_instance_name }}"
     state: started
     restart: yes
     image: "{{ docker_image }}"
     volumes:
-      - "{{ host_data_folders }}:{{ hadoop.container.exposed_folder.base }}"
+      - "{{ host_base_folder }}:{{ hadoop.container.exposed_folder.base }}"
     network_mode: host
     restart_policy: always
     tty: yes
-  when: hadoop_container_name != ""
+  when: docker_instance_name | length > 0

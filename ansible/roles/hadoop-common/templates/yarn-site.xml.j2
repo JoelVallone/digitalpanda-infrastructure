@@ -19,11 +19,11 @@
 <configuration>
   <property>
     <name>yarn.resourcemanager.hostname</name>
-    <value>{% if 'hadoop-master-node' in group_names %}0.0.0.0{% else %}{{hadoop.yarn.ressourcemanager.host_fqdn}}{% endif %}</value>
+    <value>{% if 'hadoop_master_node' in group_names %}0.0.0.0{% else %}{{hadoop.yarn.ressourcemanager.host_fqdn}}{% endif %}</value>
   </property>
   <property>
     <name>yarn.nodemanager.hostname</name>
-    <value>{% if 'hadoop-master-node' in group_names %}0.0.0.0{% else %}{{cluster_node.host_fqdn}}{% endif %}</value>
+    <value>{% if 'hadoop_master_node' in group_names %}0.0.0.0{% else %}{{cluster_node.host_fqdn}}{% endif %}</value>
   </property>
   <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>

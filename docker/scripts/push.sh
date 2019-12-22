@@ -20,9 +20,9 @@ ${folders}"
 
 function pushToRegistry() {
     local imageName=${1}
-    local fullImageName="${DOCKER_REGISTRY_IP}:${DOCKER_REGISTRY_PORT}/${DOCKER_REGISTRY_USERNAME}/${imageName}"
+    local fullImageName="${DOCKER_REGISTRY_FQDN}:${DOCKER_REGISTRY_PORT}/${DOCKER_REGISTRY_USERNAME}/${imageName}"
     local imageFullPath="${DOCKER_IMAGE_FOLDER}/${imageName}"
-    echo "Build and push docker image \"${imageName}\" to docker registry ${DOCKER_REGISTRY_IP}:${DOCKER_REGISTRY_PORT}"
+    echo "Build and push docker image \"${imageName}\" to docker registry ${DOCKER_REGISTRY_FQDN}:${DOCKER_REGISTRY_PORT}"
     
     cmd="sudo docker build -t ${fullImageName} ${imageFullPath}"
     echo ${cmd}

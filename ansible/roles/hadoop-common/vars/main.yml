@@ -3,34 +3,13 @@
 docker_image: "to-define-at-runtime"
 
 # Docker pre-image variables
-docker_instance_name: "{{ hadoop_container_name }}-{{ node_id }}"
-host_base_folder: "/home/{{ cluster_config_user }}/hadoop"
+host_base_folder: "/home/{{ cluster_config_user }}/{{ hadoop_role }}"
 host_data_folders:
   config: "{{ host_base_folder }}/config"
   log: "{{ host_base_folder }}/log"
   data_master: "{{ host_base_folder }}/hdfs/master/data"
   data_slave: "{{ host_base_folder }}/hdfs/slave/data"
 
-
-#Old
-hadoop :
-  container:
-    base_folder: "/opt/hadoop"
-    install_folder: "/opt/hadoop/hadoop-2.9.0"
-    exposed_folder:
-      base: "/opt/hadoop/ext"
-      config: "/opt/hadoop/ext/config"
-      log: "/opt/hadoop/ext/log"
-      data_master: "/opt/hadoop/ext/hdfs/master/data"
-      data_slave: "/opt/hadoop/ext/hdfs/slave/data"
-
-  hdfs:
-    namenode:
-      host_fqdn: "{{groups['hadoop-master-node'][0]}}"
-
-  yarn:
-    ressourcemanager:
-     host_fqdn: "{{groups['hadoop-master-node'][0]}}"
 
 cluster_node:
   host_fqdn: "stressed-panda-{{ node_id  }}.{{ cluster_domain }}"
