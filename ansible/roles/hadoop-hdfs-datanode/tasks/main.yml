@@ -1,6 +1,10 @@
----    
+---
+- name: "Prepare environment for hadoop instance"
+  include_role:
+    name: hadoop-common
+
 - name: "Start hdfs datanode"
   become: yes
-  shell: docker exec hadoop-hdfs-datanode bash -l -c '{{hadoop.container.install_folder}}/sbin/hadoop-daemon.sh start datanode > {{hadoop.container.exposed_folder.log}}/hdfs-datanode-start.log'
+  shell: docker exec {{ docker_instance_name }}  bash -l -c '{{hadoop.container.install_folder}}/sbin/hadoop-daemon.sh start datanode > {{hadoop.container.exposed_folder.log}}/hdfs-datanode-start.log'
 
 

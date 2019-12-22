@@ -1,5 +1,5 @@
 ---
-- name: "Prepare environment for docker instance"
+- name: "Prepare environment for hadoop instance"
   include_role:
     name: hadoop-common
 
