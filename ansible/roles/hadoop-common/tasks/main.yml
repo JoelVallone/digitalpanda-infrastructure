@@ -14,6 +14,7 @@
     - core-site.xml
     - hdfs-site.xml
     - yarn-site.xml
+    - capacity-scheduler.xml
 
 - name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}-* "
   become: yes

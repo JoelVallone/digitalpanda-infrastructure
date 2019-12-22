@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPT_FOLDER="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
 ROOT_FOLDER="${SCRIPT_FOLDER}/.."
-SPARK_VERSION=spark-2.3.3
+SPARK_VERSION=spark-2.4.4
 SPARK_NAME=${SPARK_VERSION}-bin-hadoop2.7
 SPARK_FOLDER=${ROOT_FOLDER}/${SPARK_NAME}
 HADOOP_CLIENT_CONFIG_FOLDER=${ROOT_FOLDER}/config/client-config

@@ -43,11 +43,11 @@
   </property>
   <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
-    <value>1024</value>
+    <value>{{ hadoop.yarn.nodemanager.memory_MB }}</value>
   </property>
   <property>
     <name>yarn.nodemanager.resource.cpu-vcores</name>
-    <value>1</value>
+    <value>{{ hadoop.yarn.nodemanager.vCPU }}</value>
   </property>
   <property>
     <name>yarn.scheduler.capacity.root.queues</name>
@@ -57,8 +57,19 @@
     </description>
   </property>
   <property>
-    <name>yarn.scheduler.capacity.root.default.capacity</name>
-    <value>100</value>
-    <description>Default queue target capacity.</description>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>1024</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>8192</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-vcores</name>
+    <value>1</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-vcores</name>
+    <value>4</value>
   </property>
 </configuration>

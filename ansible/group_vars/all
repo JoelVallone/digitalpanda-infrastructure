@@ -61,8 +61,10 @@ hadoop :
 
   yarn:
     ressourcemanager:
-     host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
-
+      host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
+    nodemanager:
+      memory_MB: 4096
+      vCPU: 4
 inject_test_data: false
 
 digitalpanda_backend_version: 1.0.0
