@@ -1,0 +1,19 @@
+---
+topic_default:
+  prefix: "org.digitalpanda"
+  partitions: 6
+  replication_factor: 2
+
+topics:
+  - name: "{{ topic_default.prefix }}.measure.raw-1-sec"
+    partitions: "{{ topic_default.partitions }}"
+    replication_factor: "{{ topic_default.replication_factor }}"
+  - name: "{{ topic_default.prefix }}.measure.processed-1-min"
+    partitions: "{{ topic_default.partitions }}"
+    replication_factor: "{{ topic_default.replication_factor }}"
+  - name: "{{ topic_default.prefix }}.measure.processed-1-hour"
+    partitions: "{{ topic_default.partitions }}"
+    replication_factor: "{{ topic_default.replication_factor }}"
+  - name: "{{ topic_default.prefix }}.measure.processed-6-hour"
+    partitions: "{{ topic_default.partitions }}"
+    replication_factor: "{{ topic_default.replication_factor }}"

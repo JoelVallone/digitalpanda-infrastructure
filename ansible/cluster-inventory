@@ -43,7 +43,8 @@ fanless1.digitalpanda.org
 stressed-panda-1.lab.digitalpanda.org
 stressed-panda-2.lab.digitalpanda.org
 
-
+[cp_kafka_manage]
+fanless1.digitalpanda.org
 
 [arm_build_node]
 pi3-2.lab.digitalpanda.org

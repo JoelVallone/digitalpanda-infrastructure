@@ -1,0 +1,9 @@
+---
+- hosts:
+   - cp_kafka_manage
+  roles:
+    - digitalpanda-digestion
+
+
+
+
