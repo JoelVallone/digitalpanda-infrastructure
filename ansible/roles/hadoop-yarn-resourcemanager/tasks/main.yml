@@ -2,9 +2,7 @@
 - name: "Prepare environment for hadoop instance"
   include_role:
     name: hadoop-common
-
-- name: "Start yarn resourcemanager"
-  become: yes
-  shell: docker exec {{ docker_instance_name }}  bash -l -c '{{hadoop.container.install_folder}}/sbin/yarn-daemon.sh start resourcemanager > {{hadoop.container.exposed_folder.log}}/yarn-resourcemanager-start.log'
+  vars:
+    docker_command: "{{hadoop.container.install_folder}}/sbin/yarn-daemon.sh start resourcemanager > {{hadoop.container.exposed_folder.log}}/yarn-resourcemanager-start.log"
 
 

@@ -33,4 +33,5 @@ COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod gu+x /opt/entrypoint.sh
 COPY default-config ${HADOOP_CONF_DIR}
 
-ENTRYPOINT /opt/entrypoint.sh
+ENTRYPOINT ["/opt/entrypoint.sh"]
+CMD ["date"]
