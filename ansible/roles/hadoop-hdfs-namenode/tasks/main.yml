@@ -9,6 +9,6 @@
   become: yes
   shell: docker exec hadoop-hdfs-namenode bash -l -c '{{hadoop.container.install_folder}}/bin/hdfs namenode -format -force  hadoop-hdfs > {{hadoop.container.exposed_folder.log}}/hdfs-format.log'
   when:
-    - (pristine_instance | bool) or (absent_from_node | bool)
+    - (pristine_instance | bool) and (not (absent_from_node | bool))
 
 

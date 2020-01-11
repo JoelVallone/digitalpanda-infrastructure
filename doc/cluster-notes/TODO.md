@@ -1,5 +1,8 @@
 # New
-
+- fix hadoop
+    - clean hadoop shutdown
+    - routing to 192.168.1.0/24 ips from dev laptop (edge node role)
+    
 - setup kafka-connect with cassandra connector
     - setup cassandra tables
     - setup kafka connectors
@@ -8,6 +11,7 @@
  - metric averages: 1m/1h/6h
  - measure inventory
  - setup jar submit mechanism
+ - optional: find or implement ConfluentRegistryAvroSerializationSchema
 - rewrite pi iot client to write raw measure to kafka topic
 - rewrite backend code to handle metric averages
 

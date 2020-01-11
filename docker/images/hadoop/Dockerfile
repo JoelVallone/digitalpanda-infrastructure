@@ -3,7 +3,7 @@ MAINTAINER Joel Vallone <joel.vallone@gmail.com>
 
 ENV JAVA_HOME  /usr/lib/jvm/java-8-openjdk-amd64
 ENV JAVA_HEAP_SIZE 2048
-ENV HADOOP_VERSION "2.9.2"
+ENV HADOOP_VERSION "2.8.3"
 ENV HADOOP_BASE  /opt/hadoop
 ENV HADOOP_PREFIX ${HADOOP_BASE}/hadoop-${HADOOP_VERSION}
 ENV HADOOP_CONF_DIR ${HADOOP_BASE}/ext/config 
@@ -14,10 +14,10 @@ RUN apt-get update && \
     apt-get install -y openjdk-8-jdk wget && \
     rm -rf /var/lib/apt/lists/*
 
-# Install hadoop 2.9.2
+# Install hadoop
 RUN mkdir -p ${HADOOP_BASE} && \
     cd ${HADOOP_BASE} && \
-    wget https://www-eu.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    wget http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
     tar -zxf hadoop-${HADOOP_VERSION}.tar.gz && \
     rm hadoop-${HADOOP_VERSION}.tar.gz;
 

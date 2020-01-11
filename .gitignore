@@ -10,4 +10,7 @@ docker/images/backend-java/backend.application-0.1.0.jar
 docker/images/frontend-angular/digitalpanda-frontend/
 doc/cluster-notes/cp-docker-images/
 doc/cluster-notes/cp-more-examples/
-spark/spark-2.3.3-bin-hadoop2.7
+spark/spark-2.4.4-bin-hadoop2.7
+flink/flink-1.9.1
+hadoop/hadoop-2.9.2
+
