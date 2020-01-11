@@ -1,7 +1,6 @@
 # New
 - fix hadoop
-    - clean hadoop shutdown
-    - routing to 192.168.1.0/24 ips from dev laptop (edge node role)
+    - optional: routing to 192.168.1.0/24 ips from dev laptop (hadoop edge node role)
     
 - setup kafka-connect with cassandra connector
     - setup cassandra tables
@@ -26,6 +25,8 @@
 - Optional: setup docker containers network in bridge mode with manual hosts file "etc_hosts"
 - Optional: setup network routing to reach stressed pandas via fanless1
 
+# subnet routing
+    https://serverfault.com/questions/593448/routing-between-two-subnets-using-a-linux-box-with-two-nics/593457
 # Old
 - update pi3-1 to new hypriot OS version OR troubleshoot docker registry
 - fix datanode display httpAddress to host ip instead of localhost in namenode ui
