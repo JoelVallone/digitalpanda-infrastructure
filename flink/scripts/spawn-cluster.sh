@@ -41,7 +41,6 @@ echo -e "\n\nSTART FLINK DETACHED SESSION"
 cd "${ROOT_FOLDER}/${FLINK_FOLDER}"
 export YARN_CONF_DIR="${ROOT_FOLDER}/config/hadoop"
 export HADOOP_CONF_DIR="${ROOT_FOLDER}/config/hadoop"
-
 YARN_KILLS_FLINK=$(./bin/yarn-session.sh -n 2 -s 2 -st -jm 2048m -tm 2048m -d | tail -n 1)
 echo "Started flink as YARN application, kill it with: ${YARN_KILLS_FLINK}"
 

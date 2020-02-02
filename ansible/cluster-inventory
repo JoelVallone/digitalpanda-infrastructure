@@ -43,7 +43,10 @@ fanless1.digitalpanda.org
 stressed-panda-1.lab.digitalpanda.org
 stressed-panda-2.lab.digitalpanda.org
 
-[cp_kafka_manage]
+[cassandra_node]
+fanless1.digitalpanda.org
+
+[cluster_client_host]
 fanless1.digitalpanda.org
 
 [arm_build_node]

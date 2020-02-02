@@ -7,12 +7,12 @@
     - setup kafka connectors
     - test cassandra sink from avro topic
 - write flink jobs
- - metric averages: 1m/1h/6h
- - measure inventory
- - setup jar submit mechanism
+ - setup jar submit mechanism:
+    - create hadoop-flink-client docker image
+        - add latest digestion jar into docker image and publish to registry
+    - submit job from latest docker image !
  - optional: find or implement ConfluentRegistryAvroSerializationSchema
 - rewrite pi iot client to write raw measure to kafka topic
-- rewrite backend code to handle metric averages
 
 
 - Optional: Tune YARN & HDFS

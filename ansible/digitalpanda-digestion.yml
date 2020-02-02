@@ -1,6 +1,6 @@
 ---
 - hosts:
-   - cp_kafka_manage
+   - cluster_client_host
   roles:
     - digitalpanda-digestion
 
